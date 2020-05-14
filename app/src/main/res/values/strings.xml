@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">HotelBooking</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="spinner_search" >
+        <item>1 Adults</item>
+        <item>2 Adults</item>
+        <item>Families</item>
+        <item>Groups</item>
+    </string-array>
 </resources>
