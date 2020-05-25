@@ -3,15 +3,30 @@ package com.example.hotelbooking.Item;
 public class HomeItem {
     private int imageView;
     private String name;
-    private float price; // for 1 night
-    private String description;
+    private float rating;
+    private int price; // for 1 night
+    private String description1;
+    private String description2;
+    private String description3;
 
-    public HomeItem(int imageView, String name, float price, String description) {
+    public HomeItem(int imageView, String name, float rating, int price, String description1, String description2, String description3) {
         this.imageView = imageView;
         this.name = name;
+        this.rating = rating;
         this.price = price;
-        this.description = description;
+        this.description1 = description1;
+        this.description2 = description2;
+        this.description3 = description3;
     }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
 
     public int getImageView() {
         return imageView;
@@ -29,21 +44,35 @@ public class HomeItem {
         this.name = name;
     }
 
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescription1() {
+        return description1;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription1(String description1) {
+        this.description1 = description1;
     }
 
+    public String getDescription2() {
+        return description2;
+    }
 
+    public void setDescription2(String description2) {
+        this.description2 = description2;
+    }
+
+    public String getDescription3() {
+        return description3;
+    }
+
+    public void setDescription3(String description3) {
+        this.description3 = description3;
+    }
 }

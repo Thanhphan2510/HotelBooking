@@ -2,11 +2,14 @@ package com.example.hotelbooking.Fragment;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
@@ -20,7 +23,7 @@ import java.util.ArrayList;
  */
 public class FragmentHome extends Fragment {
 
-    ArrayList<HomeItem> items = new ArrayList<>();
+
 
     public FragmentHome() {
         // Required empty public constructor
@@ -45,6 +48,11 @@ public class FragmentHome extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home,container,false);
+        AppCompatActivity activity =(AppCompatActivity)view.getContext();
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_home, FragmentHomeMain.newInstance()).commit();
+        return view;
+
     }
 }

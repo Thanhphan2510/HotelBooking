@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.HomeAcitivity"></activity>
-        <activity android:name=".View.WelcomeActivity">
+        <activity android:name=".Activity.HomeActivity"></activity>
+        <activity android:name=".Activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
