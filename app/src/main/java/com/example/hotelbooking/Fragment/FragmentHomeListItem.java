@@ -1,15 +1,19 @@
 package com.example.hotelbooking.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Adapter.ItemHomeAdapter;
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
@@ -79,6 +83,21 @@ public class FragmentHomeListItem extends Fragment {
                 "Single Room", "Include taxes and charge\nFREE cancellation\nNo prepayment needed"));
         itemHomeAdapter = new ItemHomeAdapter(listView.getContext(), items);
         listView.setAdapter(itemHomeAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                HomeItem homeItem = (HomeItem) adapterView.getItemAtPosition(i);
+
+                AppCompatActivity activity =(AppCompatActivity) view.getContext();
+                Intent intent = new Intent(activity.getApplicationContext(), DetailItemActivity.class);
+                intent.putExtra("InfoClickedItem", homeItem);
+                activity.startActivity(intent);
+
+
+
+            }
+        });
+
         return view;
 
     }

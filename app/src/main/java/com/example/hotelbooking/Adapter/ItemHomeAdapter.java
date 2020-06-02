@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ItemHomeAdapter extends ArrayAdapter<HomeItem> {
     private Context context;
@@ -35,6 +37,7 @@ public class ItemHomeAdapter extends ArrayAdapter<HomeItem> {
         listView = LayoutInflater.from(context).inflate(R.layout.item_homeitem,parent,false);
 
         HomeItem homeItem = homeItems.get(position);
+
         ImageView imageView = (ImageView)  listView.findViewById(R.id.image_homeitem);
         TextView name = listView.findViewById(R.id.name_homeitem);
         RatingBar ratingBar = listView.findViewById(R.id.ratingbar_homeitem);
@@ -50,14 +53,13 @@ public class ItemHomeAdapter extends ArrayAdapter<HomeItem> {
         des2.setText(homeItem.getDescription2());
         des3.setText(homeItem.getDescription3());
         price.setText("VND "+ String.valueOf(homeItem.getPrice()));
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AppCompatActivity activity =(AppCompatActivity) v.getContext();
-//                Intent intent = new Intent(activity.getApplicationContext(),SelectPictureActivity.class);
-//                activity.startActivity(intent);
-//            }
-//        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        imageView.setFocusable(false);
         return listView;
     }
 }

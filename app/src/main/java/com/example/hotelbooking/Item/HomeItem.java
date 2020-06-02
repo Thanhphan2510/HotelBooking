@@ -1,18 +1,20 @@
 package com.example.hotelbooking.Item;
 
-public class HomeItem {
+import java.io.Serializable;
+
+public class HomeItem implements Serializable {
     private int imageView;
     private String name;
-    private float rating;
+    private float star;
     private int price; // for 1 night
     private String description1;
     private String description2;
     private String description3;
 
-    public HomeItem(int imageView, String name, float rating, int price, String description1, String description2, String description3) {
+    public HomeItem(int imageView, String name, float star, int price, String description1, String description2, String description3) {
         this.imageView = imageView;
         this.name = name;
-        this.rating = rating;
+        this.star = star;
         this.price = price;
         this.description1 = description1;
         this.description2 = description2;
@@ -20,11 +22,11 @@ public class HomeItem {
     }
 
     public float getRating() {
-        return rating;
+        return star;
     }
 
     public void setRating(float rating) {
-        this.rating = rating;
+        this.star = rating;
     }
 
 
