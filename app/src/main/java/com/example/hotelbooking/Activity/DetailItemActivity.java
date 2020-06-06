@@ -21,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 public class DetailItemActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ImageView hotelImmage;
@@ -28,6 +29,7 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
     private RatingBar hotelRating;
     private GoogleMap googleMap;
     private Button selectRoomBtn;
+    HomeItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,8 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
         selectRoomBtn = findViewById(R.id.btn_selectroom);
 
         Intent intent = getIntent();
-        HomeItem item = (HomeItem) intent.getSerializableExtra("InfoClickedItem");
-        hotelImmage.setImageResource(item.getImageView());
+        item = (HomeItem) intent.getSerializableExtra("InfoClickedItem");
+        Picasso.with(this.getApplicationContext()).load(item.getImageView()).into(hotelImmage);
         hotelName.setText(item.getName());
         hotelRating.setRating(item.getRating());
 
@@ -49,9 +51,9 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View view) {
 //                HomeItem homeItem = (HomeItem) view.getItemAtPosition(i);
 
-                AppCompatActivity activity =(AppCompatActivity) view.getContext();
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Intent intent = new Intent(activity.getApplicationContext(), ChooseRoomActivity.class);
-//                intent.putExtra("InfoClickedItem", homeItem);
+                intent.putExtra("InfoClickedItem", item);
                 activity.startActivity(intent);
 
             }
@@ -65,6 +67,7 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.fragment_map_detail_item);
         smf.getMapAsync(this);
     }
+
     @Override
     protected void onResume() {
         super.onResume();

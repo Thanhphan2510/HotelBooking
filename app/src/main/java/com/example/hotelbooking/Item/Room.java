@@ -1,14 +1,18 @@
 package com.example.hotelbooking.Item;
 
+import com.google.firebase.firestore.PropertyName;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Room {
     private String name;
     private int price;
     private String description;
-    private ArrayList<String> facilites;
+    @PropertyName("facilites")
+    private List<String> facilites;
 
-    public Room(String name, int price, String description, ArrayList<String> facilites) {
+    public Room(String name, int price, String description, List<String> facilites) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -38,12 +42,12 @@ public class Room {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public ArrayList<String> getFacilites() {
+    @PropertyName("facilites")
+    public List<String> getFacilites() {
         return facilites;
     }
-
-    public void setFacilites(ArrayList<String> facilites) {
+    @PropertyName("facilites")
+    public void setFacilites(List<String> facilites) {
         this.facilites = facilites;
     }
 }

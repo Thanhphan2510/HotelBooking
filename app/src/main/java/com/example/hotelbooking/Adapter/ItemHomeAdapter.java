@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -28,6 +29,12 @@ public class ItemHomeAdapter extends ArrayAdapter<HomeItem> {
         super(context, 0,homeItems);
         this.context = context;
         this.homeItems = homeItems;
+    }
+
+    @Nullable
+    @Override
+    public HomeItem getItem(int position) {
+        return homeItems.get(position);
     }
 
     @NonNull
@@ -46,20 +53,23 @@ public class ItemHomeAdapter extends ArrayAdapter<HomeItem> {
         TextView price = listView.findViewById(R.id.price_homeitem);
         TextView des3 = listView.findViewById(R.id.des3_homeitem);
 
-        imageView.setImageResource(homeItem.getImageView());
+//        imageView.setImageResource(homeItem.getImageView());
+        Picasso.with(context).load(homeItem.getImageView().toString()).into(imageView);
         name.setText(homeItem.getName());
         ratingBar.setRating(homeItem.getRating());
         des1.setText(homeItem.getDescription1());
         des2.setText(homeItem.getDescription2());
         des3.setText(homeItem.getDescription3());
         price.setText("VND "+ String.valueOf(homeItem.getPrice()));
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
         imageView.setFocusable(false);
+
         return listView;
     }
+
 }

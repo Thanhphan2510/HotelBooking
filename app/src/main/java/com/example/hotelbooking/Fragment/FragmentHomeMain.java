@@ -1,5 +1,6 @@
 package com.example.hotelbooking.Fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.example.hotelbooking.R;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +23,7 @@ import com.example.hotelbooking.R;
  */
 public class FragmentHomeMain extends Fragment {
     private Button searchBtn, checkinBtn, checkoutBtn;
+    private int mYear, mMonth, mDay;
 
     public FragmentHomeMain() {
         // Required empty public constructor
@@ -53,6 +58,38 @@ public class FragmentHomeMain extends Fragment {
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home, fragment)
                         .addToBackStack(null).commit();
 
+            }
+        });
+        checkinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        checkinBtn.setText(dayOfMonth + " - " + (month + 1) + " - " + year);
+                    }
+                }, mYear, mMonth, mDay);
+                dd.show();
+            }
+        });
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        checkoutBtn.setText(dayOfMonth + " - " + (month + 1) + " - " + year);
+                    }
+                }, mYear, mMonth, mDay);
+                dd.show();
             }
         });
         return view;

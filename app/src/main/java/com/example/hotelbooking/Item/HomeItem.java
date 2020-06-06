@@ -3,7 +3,8 @@ package com.example.hotelbooking.Item;
 import java.io.Serializable;
 
 public class HomeItem implements Serializable {
-    private int imageView;
+    private String id;
+    private String imageView;
     private String name;
     private float star;
     private int price; // for 1 night
@@ -11,7 +12,8 @@ public class HomeItem implements Serializable {
     private String description2;
     private String description3;
 
-    public HomeItem(int imageView, String name, float star, int price, String description1, String description2, String description3) {
+    public HomeItem(String id,String imageView, String name, float star, int price, String description1, String description2, String description3) {
+        this.id = id;
         this.imageView = imageView;
         this.name = name;
         this.star = star;
@@ -29,12 +31,27 @@ public class HomeItem implements Serializable {
         this.star = rating;
     }
 
+    public String getId() {
+        return id;
+    }
 
-    public int getImageView() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public float getStar() {
+        return star;
+    }
+
+    public void setStar(float star) {
+        this.star = star;
+    }
+
+    public String getImageView() {
         return imageView;
     }
 
-    public void setImageView(int imageView) {
+    public void setImageView(String imageView) {
         this.imageView = imageView;
     }
 
@@ -76,5 +93,18 @@ public class HomeItem implements Serializable {
 
     public void setDescription3(String description3) {
         this.description3 = description3;
+    }
+
+    @Override
+    public String toString() {
+        return "HomeItem{" +
+                "imageView=" + imageView +
+                ", name='" + name + '\'' +
+                ", star=" + star +
+                ", price=" + price +
+                ", description1='" + description1 + '\'' +
+                ", description2='" + description2 + '\'' +
+                ", description3='" + description3 + '\'' +
+                '}';
     }
 }

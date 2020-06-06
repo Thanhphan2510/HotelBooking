@@ -34,7 +34,6 @@
                         android:layout_weight="1"
                         android:layout_height="141dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/vonga"
                         android:layout_margin="4dp"/>
                     <ImageView
                         android:layout_width="0dp"
