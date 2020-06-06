@@ -40,6 +40,8 @@
         android:layout_height="wrap_content"
         android:text="Sign in with account hotelbooking"
         app:layout_constraintTop_toBottomOf="@id/login_facebook_btn"
+        android:background="@android:color/holo_orange_dark"
+        android:textColor="@color/design_default_color_on_primary"
         android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/tv2"
@@ -56,7 +58,9 @@
         android:layout_height="wrap_content"
         android:text="Create your account"
         app:layout_constraintTop_toBottomOf="@id/tv2"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:background="@android:color/holo_orange_dark"
+        android:textColor="@color/design_default_color_on_primary"/>
 
     <TextView
         android:id="@+id/exit_tv"

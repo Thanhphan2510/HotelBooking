@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,11 +33,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class StartLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class StartLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private TextView exit;
     private LoginButton loginFacebook;
     private SignInButton loginGoogle;
+    private Button loginHotelBooking, createAccountHB;
+
     GoogleApiClient mGoogleApiClient;
+
 
     CallbackManager callbackManager;
     private static final int RC_SIGN_IN = 1;
@@ -46,9 +51,15 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         setContentView(R.layout.activity_start_login);
         exit = findViewById(R.id.exit_tv);
         callbackManager = CallbackManager.Factory.create();
+
+        loginGoogle = findViewById(R.id.login_google_btn);
         loginFacebook = findViewById(R.id.login_facebook_btn);
+        loginHotelBooking = findViewById(R.id.login_hotelbooking_btn);
+        createAccountHB = findViewById(R.id.create_account_btn);
+
 //        TextView textView = (TextView) loginGoogle.getChildAt(0);
 //        textView.setText("Continute with Google");
+
         loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -78,6 +89,23 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
             }
         });
 
+        loginHotelBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginAccountHB.class);
+                startActivity(intent);
+
+            }
+        });
+
+        createAccountHB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CreateAccountHB.class);
+                startActivity(intent);
+            }
+        });
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -89,19 +117,20 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this ,
-                         this /* OnConnectionFailedListener */)
+                .enableAutoManage(this,
+                        this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         // [END build_client]
-        loginGoogle = findViewById(R.id.login_google_btn);
+
         loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(intent,RC_SIGN_IN);
+                startActivityForResult(intent, RC_SIGN_IN);
             }
         });
+
 
     }
 
@@ -109,23 +138,26 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
     }
-    private void handleSignInResult(GoogleSignInResult result){
-        if(result.isSuccess()){
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
             gotoProfile();
-        }else{
-            Toast.makeText(getApplicationContext(),"Sign in cancel",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Sign in cancel", Toast.LENGTH_LONG).show();
         }
     }
-    private void gotoProfile(){
+
+
+    private void gotoProfile() {
 //        Intent intent=new Intent(StartLoginActivity.this,ProfileActivity.class);
 //        startActivity(intent);
         //---> link: https://www.javatpoint.com/android-googlesignin-integrating
-        Toast.makeText(getApplicationContext(),"Sign in successed",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Sign in successed", Toast.LENGTH_LONG).show();
     }
 
     public static String printKeyHash(Activity context) {
@@ -164,4 +196,5 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 }
