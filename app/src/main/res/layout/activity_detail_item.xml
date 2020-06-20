@@ -188,7 +188,7 @@
                 <TextView
                     android:id="@+id/tv_des_detailitem"
                     android:layout_width="wrap_content"
-                    android:layout_height="123dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="20dp"
                     android:text="Located within 7 miles of VincomCenter Nguyen CHi Thanh and 7 miles of Vietname Fine Arts Museum
@@ -197,10 +197,6 @@
 \nAll room in the hotel are equipped with a flat-screen TV and air conditioner
 \nLocated within 7 miles of VincomCenter Nguyen CHi Thanh and 7 miles of Vietname Fine Arts Museum
 \nAll room in the hotel are equipped with a flat-screen TV and air conditioner" />
-
-
-
-
 
             </LinearLayout>
         </LinearLayout>

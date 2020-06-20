@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.CreateAccountHB"></activity>
+        <activity android:name=".Activity.MapActivity"></activity>
+        <activity android:name=".Activity.CreateAccountHB" />
         <activity android:name=".Activity.LoginAccountHB" />
         <activity android:name=".Activity.StartLoginActivity" />
         <activity android:name=".Activity.BookingReviewActivity" />
@@ -32,11 +33,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -70,12 +70,12 @@
 
 
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:entries="@array/spinner_search" />
+<!--            <Spinner-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:entries="@array/spinner_search" />-->
             <Button
                 android:id="@+id/search_btn"
                 android:layout_width="154dp"

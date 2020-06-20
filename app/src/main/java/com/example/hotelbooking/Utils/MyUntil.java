@@ -2,26 +2,35 @@ package com.example.hotelbooking.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.format.DateFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 public class MyUntil {
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
+    public static long covertDatetoTimeStamp(String str_date) throws ParseException {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+        Date date = (Date)formatter.parse(str_date);
+        long output=date.getTime()/1000L;
+        String str=Long.toString(output);
+        long timestamp = Long.parseLong(str) * 1000;
+        return timestamp;
     }
+    public static Date covertStringtoDate(String str_date) throws ParseException {
+//        String dtStart = "2010-10-15T09:27:37Z";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = format.parse(str_date);
+        return date;
+    }
+
 
 }

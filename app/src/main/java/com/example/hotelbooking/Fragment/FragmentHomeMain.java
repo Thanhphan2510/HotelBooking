@@ -25,6 +25,8 @@ public class FragmentHomeMain extends Fragment {
     private Button searchBtn, checkinBtn, checkoutBtn;
     private int mYear, mMonth, mDay;
 
+    String checkinStr, checkoutStr;
+
     public FragmentHomeMain() {
         // Required empty public constructor
     }
@@ -40,7 +42,10 @@ public class FragmentHomeMain extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,8 +58,13 @@ public class FragmentHomeMain extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle=new Bundle();
+                bundle.putString("checkin", checkinStr);
+                bundle.putString("checkout", checkoutStr);
+
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 FragmentHomeListItem fragment = new FragmentHomeListItem();
+                fragment.setArguments(bundle);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home, fragment)
                         .addToBackStack(null).commit();
 
@@ -70,7 +80,8 @@ public class FragmentHomeMain extends Fragment {
                 DatePickerDialog dd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        checkinBtn.setText(dayOfMonth + " - " + (month + 1) + " - " + year);
+                        checkinBtn.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                        checkinStr = checkinBtn.getText().toString();
                     }
                 }, mYear, mMonth, mDay);
                 dd.show();
@@ -86,7 +97,8 @@ public class FragmentHomeMain extends Fragment {
                 DatePickerDialog dd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        checkoutBtn.setText(dayOfMonth + " - " + (month + 1) + " - " + year);
+                        checkoutBtn.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                        checkoutStr = checkoutBtn.getText().toString();
                     }
                 }, mYear, mMonth, mDay);
                 dd.show();

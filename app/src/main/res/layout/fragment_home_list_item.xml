@@ -37,14 +37,18 @@
                 android:layout_weight="1"
                 android:text="Map" />
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Danh sách các khách sạn"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Danh sách các khách sạn"-->
+<!--            android:textSize="28dp"-->
+<!--            android:textColor="#123"/>-->
         <ListView
             android:id="@+id/items_home_listview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"/>
 <!--            android:descendantFocusability="blocksDescendants"/>-->
     </LinearLayout>
 </FrameLayout>
