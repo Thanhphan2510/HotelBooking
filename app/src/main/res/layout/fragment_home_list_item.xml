@@ -24,13 +24,6 @@
                 android:text="Sort" />
 
             <Button
-                android:id="@+id/title_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Filter" />
-
-            <Button
                 android:id="@+id/title_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

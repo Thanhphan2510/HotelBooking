@@ -2,10 +2,12 @@ package com.example.hotelbooking.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -13,21 +15,32 @@ import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Activity.MapActivity;
 import com.example.hotelbooking.Adapter.ItemHomeAdapter;
 import com.example.hotelbooking.Item.HomeItem;
+import com.example.hotelbooking.Item.Room;
 import com.example.hotelbooking.R;
+import com.example.hotelbooking.Utils.MyUntil;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import io.opencensus.internal.Utils;
 
 //import com.example.hotelbooking.Item.MarkerItem;
 //import com.google.maps.android.clustering.ClusterManager;
@@ -46,7 +59,17 @@ public class FragmentHomeListItem extends Fragment {
     HomeItem item;
     GeoDataClient geoDataClient;
     PlaceDetectionClient placeDetectionClient;
-    String id;
+
+
+    ArrayList<String> hotelIDs;
+    ArrayList<String> bookedHotelIDs;
+    ArrayAdapter<String> adapter;
+
+    int total, bookedTotal;
+    int checkBookedRoom = -1;
+
+    HashMap<String, Integer> hotelID_roomID;
+    ArrayList<String> roomIDs;
 
     public FragmentHomeListItem() {
         // Required empty public constructor
@@ -90,114 +113,16 @@ public class FragmentHomeListItem extends Fragment {
                 startActivity(intent);
             }
         });
-
-
         items = new ArrayList<>();
+        hotelIDs = new ArrayList();
+        bookedHotelIDs = new ArrayList();
+        hotelID_roomID = new HashMap<>();
+        roomIDs = new ArrayList<>();
 
-//        final String checkinStr = getArguments().getString("checkin");
-//        final String checkoutStr = getArguments().getString("checkout");
-//        Log.e("notice check in", checkinStr + "????" + checkoutStr);
+        final String checkinStr = getArguments().getString("checkin");
+        final String checkoutStr = getArguments().getString("checkout");
 
-        final FirebaseFirestore database = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = database.collection("hotels");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
-                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
-                                new Long(String.valueOf(doc.get("star"))).floatValue(),
-                                new Integer(String.valueOf(doc.get("price"))),
-                                String.valueOf(doc.get("description1")),
-                                String.valueOf(doc.get("description2")),
-                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
 
-                        items.add(item);
-
-                        itemHomeAdapter.notifyDataSetChanged();
-
-//                        id = String.valueOf(doc.get("id"));
-//                        Task<QuerySnapshot> reference = database.collection("hotels")
-//                                .document(id).collection("rooms").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                        if (task.isSuccessful()) {
-//                                            for (QueryDocumentSnapshot doc : task.getResult()) {
-//                                                int leftQuanitity = new Integer(String.valueOf(doc.get("leftQuanitity")));
-//
-//                                                int state = new Integer(String.valueOf(doc.get("state")));
-//                                                if (state == 1) {
-////                                                    getRoom(checkinStr, checkoutStr);
-//                                                    Log.e("lol","oke");
-//
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//
-//                                });
-
-                    }
-                }
-            }
-        });
-//        collectionReference.document().collection("rooms").get().addOnCompleteListener
-//                (new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot doc : task.getResult()) {
-//                                int leftQuanitity = new Integer(String.valueOf(doc.get("leftQuanitity")));
-//
-//                                int state = new Integer(String.valueOf(doc.get("state")));
-//                                Log.e("LOL", state + " ");
-//                                if (state == 1) {
-//                                    getRoom(checkinStr, checkoutStr);
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    private void getRoom(String checkinStr, String checkoutStr) {
-//                        Task<QuerySnapshot> collectionReference1 = database.collection("hotels")
-//                                .document().collection("rooms").document().collection("bookingInfo").get()
-//                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                        if (task.isSuccessful()) {
-//                                            for (QueryDocumentSnapshot doc : task.getResult()) {
-//                                                Timestamp timeStamp = (Timestamp) doc.get("checkin");
-//                                                Date date = timeStamp.toDate();
-//                                                Log.i("Check-in", date.toString());
-//                                            }
-//                                        }
-//                                    }
-//                                });
-//                    }
-//
-//                });
-
-//       items.add(item);
-//        items.add(new HomeItem(R.drawable.vonga, "Vonga Hotel",
-//                (float) 1.0, 200000, "Price for 3 night, 2 adults",
-//                "Single Room", "Include taxes and charge\nFREE cancellation\nNo prepayment needed"));
-//        items.add(new HomeItem(R.drawable.vonga, "Muong Thanh Hotel",
-//                (float) 5.0, 500000, "Price for 3 night, 2 adults",
-//                "Double Room", "Include taxes and charge\nNo prepayment needed"));
-//        items.add(new HomeItem(R.drawable.vonga, "The Light Hotel",
-//                (float) 3.0, 400000, "Price for 3 night, 2 adults",
-//                "Single Room", "Include taxes and charge\nFREE cancellation\nNo prepayment needed"));
-//        items.add(new HomeItem(R.drawable.vonga, "Vonga Hotel",
-//                (float) 1.0, 200000, "Price for 3 night, 2 adults",
-//                "Single Room", "Include taxes and charge\nFREE cancellation\nNo prepayment needed"));
-//        items.add(new HomeItem(R.drawable.vonga, "Muong Thanh Hotel",
-//                (float) 5.0, 500000, "Price for 3 night, 2 adults",
-//                "Double Room", "Include taxes and charge\nNo prepayment needed"));
-//        items.add(new HomeItem(R.drawable.vonga, "The Light Hotel",
-//                (float) 3.0, 400000, "Price for 3 night, 2 adults",
-//                "Single Room", "Include taxes and charge\nFREE cancellation\nNo prepayment needed"));
         itemHomeAdapter = new ItemHomeAdapter(listView.getContext(), items);
         itemHomeAdapter.notifyDataSetChanged();
         listView.setAdapter(itemHomeAdapter);
@@ -215,6 +140,165 @@ public class FragmentHomeListItem extends Fragment {
 
             }
         });
+        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+        CollectionReference reference1 = database.collection("book");
+        reference1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        String hotel_id = String.valueOf(doc.get("hotelID"));
+                        String room_id = String.valueOf(doc.get("roomID"));
+
+                        Timestamp checkinTS = (Timestamp) doc.get("checkin");
+                        Date checkinDate_Data = checkinTS.toDate();
+
+                        Timestamp checkoutTS = (Timestamp) doc.get("checkout");
+                        Date checkoutDate_Data = checkoutTS.toDate();
+                        ArrayList<String> room_list = new ArrayList<>();
+                        try {
+                            Date checkinDate = MyUntil.covertStringtoDate(checkinStr);
+                            Date checkoutDate = MyUntil.covertStringtoDate(checkoutStr);
+
+                            //check date không thỏa mãn
+                            if ((checkinDate_Data.before(checkinDate) && checkinDate.before(checkinDate_Data)) ||
+                                    (checkinDate.before(checkinDate_Data) && checkoutDate.after(checkoutDate_Data)) ||
+                                    (checkinDate_Data.before(checkoutDate) && checkoutDate_Data.after(checkoutDate))) {
+                                if (!hotelID_roomID.containsKey(hotel_id)) {
+                                    hotelID_roomID.put(hotel_id, 1);
+                                    room_list.add(room_id);
+                                    bookedHotelIDs.add(hotel_id);
+                                } else {
+                                    hotelID_roomID.replace(hotel_id, hotelID_roomID.get(hotel_id).intValue() + 1);
+                                    room_list.add(room_id);
+                                }
+
+                            }else{
+                                //date thỏa mãn
+                                DocumentReference documentReference = database.collection("hotels").document(hotel_id);
+                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot doc = task.getResult();
+                                            HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
+                                                    String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                    new Long(String.valueOf(doc.get("star"))).floatValue(),
+                                                    new Integer(String.valueOf(doc.get("price"))),
+                                                    String.valueOf(doc.get("description1")),
+                                                    String.valueOf(doc.get("description2")),
+                                                    String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                            if (!items.contains(item)) {
+                                                items.add(item);
+                                            }
+                                            itemHomeAdapter.notifyDataSetChanged();
+
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                //xử lý các trường hợp date không thỏa mãn
+                for (int i = 0; i < bookedHotelIDs.size(); i++) {
+                    if (hotelID_roomID.containsKey(hotelID_roomID.get(bookedHotelIDs.get(i)))) {
+                        int value = hotelID_roomID.get(bookedHotelIDs.get(i)).intValue();
+                        for (int j = 0; j < value; j++) {
+                            DocumentReference documentReference = database.collection("hotels")
+                                    .document(hotelIDs.get(i)).collection("rooms")
+                                    .document(roomIDs.get(j));
+                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                        int leftRoom = new Integer(String.valueOf(documentSnapshot.get("leftroom")));
+                                        String hotelID = String.valueOf(documentSnapshot.get("hotelID"));
+                                        if (leftRoom > 0) {
+                                            DocumentReference documentReference = database.collection("hotels").document(hotelID);
+                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot doc = task.getResult();
+                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
+                                                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                                new Long(String.valueOf(doc.get("star"))).floatValue(),
+                                                                new Integer(String.valueOf(doc.get("price"))),
+                                                                String.valueOf(doc.get("description1")),
+                                                                String.valueOf(doc.get("description2")),
+                                                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                                        if (!items.contains(item)) {
+                                                            items.add(item);
+                                                        }
+                                                        itemHomeAdapter.notifyDataSetChanged();
+
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+//các trường hợp room chưa có ai book
+        final CollectionReference reference = database.collection("hotels");
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        String hotelID = String.valueOf(doc.get("hotelID"));
+                        reference.document(hotelID).collection("rooms").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                        int total = new Integer(String.valueOf(doc.get("total")));
+                                        int leftroom = new Integer(String.valueOf(doc.get("leftroom")));
+                                        if(total==leftroom){
+                                            String hotelID = String.valueOf(doc.get("hotelID"));
+                                            DocumentReference documentReference = database.collection("hotels").document(hotelID);
+                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot doc = task.getResult();
+                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
+                                                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                                new Long(String.valueOf(doc.get("star"))).floatValue(),
+                                                                new Integer(String.valueOf(doc.get("price"))),
+                                                                String.valueOf(doc.get("description1")),
+                                                                String.valueOf(doc.get("description2")),
+                                                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                                        if (!items.contains(item)) {
+                                                            items.add(item);
+                                                        }
+                                                        itemHomeAdapter.notifyDataSetChanged();
+
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+
+            }
+        });
+
 
         return view;
     }

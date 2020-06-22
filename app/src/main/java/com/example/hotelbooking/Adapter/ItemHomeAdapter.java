@@ -37,6 +37,10 @@ public class ItemHomeAdapter extends ArrayAdapter<HomeItem> {
         return homeItems.get(position);
     }
 
+    public List<HomeItem> getHomeItems() {
+        return homeItems;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

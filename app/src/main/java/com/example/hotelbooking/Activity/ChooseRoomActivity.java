@@ -50,11 +50,6 @@ public class ChooseRoomActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot doc : task.getResult()) {
-//
-//                        Room item = new HomeItem(String.valueOf(doc.get("id")),String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
-//                                new Long(String.valueOf(doc.get("star"))).floatValue(), new Integer(String.valueOf(doc.get("price"))),
-//                                String.valueOf(doc.get("description1")),
-//                                String.valueOf(doc.get("description2")), String.valueOf(doc.get("description3")).replaceAll("\\n","\r\n"));
                         List<String> facilites = (List<String>) doc.get("facilites");
                         Room item = new Room(String.valueOf(doc.get("name")),
                                 new Integer(String.valueOf(doc.get("price"))),

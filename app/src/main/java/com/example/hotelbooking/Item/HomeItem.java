@@ -12,7 +12,10 @@ public class HomeItem implements Serializable {
     private String description2;
     private String description3;
 
-    public HomeItem(String id,String imageView, String name, float star, int price, String description1, String description2, String description3) {
+    public HomeItem() {
+    }
+
+    public HomeItem(String id, String imageView, String name, float star, int price, String description1, String description2, String description3) {
         this.id = id;
         this.imageView = imageView;
         this.name = name;
