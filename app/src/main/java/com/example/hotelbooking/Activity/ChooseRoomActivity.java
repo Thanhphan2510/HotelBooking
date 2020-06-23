@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -28,6 +29,8 @@ public class ChooseRoomActivity extends AppCompatActivity {
     private Button reserveBtn;
     RoomAdapter roomAdapter;
     ArrayList<Room> rooms;
+    Room room;
+    String itemID; //HotelID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,11 @@ public class ChooseRoomActivity extends AppCompatActivity {
         reserveBtn = findViewById(R.id.reserve_btn);
 
         rooms = new ArrayList<>();
+        room = new Room();
 
         Intent intent = getIntent();
         HomeItem item = (HomeItem) intent.getSerializableExtra("InfoClickedItem");
-        String itemID = item.getId();
+        itemID = item.getId();
 
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -51,11 +55,11 @@ public class ChooseRoomActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         List<String> facilites = (List<String>) doc.get("facilites");
-                        Room item = new Room(String.valueOf(doc.get("name")),
+                        room = new Room(String.valueOf(doc.get("name")),
                                 new Integer(String.valueOf(doc.get("price"))),
                                 String.valueOf(doc.get("description")),
                                 facilites);
-                        rooms.add(item);
+                        rooms.add(room);
 
                         roomAdapter.notifyDataSetChanged();
                     }
@@ -73,12 +77,22 @@ public class ChooseRoomActivity extends AppCompatActivity {
 //        rooms.add(new Room("Sea Room", 20000, "Only 1 room left on HotelBooking. \nThis is description", facilites));
         roomAdapter = new RoomAdapter(getApplicationContext(), rooms);
         listView.setAdapter(roomAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                roomAdapter.notifyDataSetChanged();
+                 room = (Room) listView.getItemAtPosition(i);
+
+
+            }
+        });
         reserveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Intent intent = new Intent(activity.getApplicationContext(), FillInfoActivity.class);
-//                intent.putExtra("InfoClickedItem", homeItem);
+                intent.putExtra("InfoClickedRoom", room);
+                intent.putExtra("HoteID", itemID);
                 activity.startActivity(intent);
 
             }

@@ -130,12 +130,14 @@ public class FragmentHomeListItem extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 itemHomeAdapter.notifyDataSetChanged();
-                HomeItem homeItem = (HomeItem) listView.getItemAtPosition(1);
+                HomeItem homeItem = (HomeItem) listView.getItemAtPosition(i);
 
 //                Log.e("LOL", "onItemClick: "+homeItem.toString() );
 //                AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Intent intent = new Intent(getContext(), DetailItemActivity.class);
                 intent.putExtra("InfoClickedItem", homeItem);
+                intent.putExtra("checkinInfor",checkinStr);
+                intent.putExtra("checkoutInfor",checkoutStr);
                 startActivity(intent);
 
             }
@@ -181,16 +183,26 @@ public class FragmentHomeListItem extends Fragment {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
                                             DocumentSnapshot doc = task.getResult();
-                                            HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
+                                            HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
                                                     String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
                                                     new Long(String.valueOf(doc.get("star"))).floatValue(),
                                                     new Integer(String.valueOf(doc.get("price"))),
                                                     String.valueOf(doc.get("description1")),
                                                     String.valueOf(doc.get("description2")),
                                                     String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                            if (!items.contains(item)) {
+                                            Log.e("items", "onComplete: xử lý các trường hợp date  thỏa mãn "+items.toString() );
+
+                                            //check exist hotel in list
+                                            boolean exist = false;
+                                            for(HomeItem item1 : items){
+                                                if(item1.getId().equals(item.getId())){{
+                                                    exist = true;
+                                                }}
+                                            }
+                                            if(exist==false){
                                                 items.add(item);
                                             }
+
                                             itemHomeAdapter.notifyDataSetChanged();
 
                                         }
@@ -224,16 +236,25 @@ public class FragmentHomeListItem extends Fragment {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         DocumentSnapshot doc = task.getResult();
-                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
+                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
                                                                 String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
                                                                 new Long(String.valueOf(doc.get("star"))).floatValue(),
                                                                 new Integer(String.valueOf(doc.get("price"))),
                                                                 String.valueOf(doc.get("description1")),
                                                                 String.valueOf(doc.get("description2")),
                                                                 String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                        if (!items.contains(item)) {
+                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn "+items.toString() );
+                                                        //check exist hotel in list
+                                                        boolean exist = false;
+                                                        for(HomeItem item1 : items){
+                                                            if(item1.getId().equals(item.getId())){{
+                                                                exist = true;
+                                                            }}
+                                                        }
+                                                        if(exist==false){
                                                             items.add(item);
                                                         }
+
                                                         itemHomeAdapter.notifyDataSetChanged();
 
                                                     }
@@ -273,16 +294,26 @@ public class FragmentHomeListItem extends Fragment {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         DocumentSnapshot doc = task.getResult();
-                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("id")),
+                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
                                                                 String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
                                                                 new Long(String.valueOf(doc.get("star"))).floatValue(),
                                                                 new Integer(String.valueOf(doc.get("price"))),
                                                                 String.valueOf(doc.get("description1")),
                                                                 String.valueOf(doc.get("description2")),
                                                                 String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                        if (!items.contains(item)) {
+                                                        Log.e("items", "onComplete: các trường hợp room chưa có ai book "+items.toString() );
+
+                                                        //check exist hotel in list
+                                                        boolean exist = false;
+                                                        for(HomeItem item1 : items){
+                                                            if(item1.getId().equals(item.getId())){{
+                                                                exist = true;
+                                                            }}
+                                                        }
+                                                        if(exist==false){
                                                             items.add(item);
                                                         }
+
                                                         itemHomeAdapter.notifyDataSetChanged();
 
                                                     }

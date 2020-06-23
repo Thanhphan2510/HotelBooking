@@ -101,6 +101,7 @@ public class HomeItem implements Serializable {
     @Override
     public String toString() {
         return "HomeItem{" +
+                "id= "+id+
                 "imageView=" + imageView +
                 ", name='" + name + '\'' +
                 ", star=" + star +

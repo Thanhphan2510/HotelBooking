@@ -2,10 +2,11 @@ package com.example.hotelbooking.Item;
 
 import com.google.firebase.firestore.PropertyName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
+public class Room implements Serializable {
     private String name;
     private int price;
     private String description;
@@ -17,6 +18,9 @@ public class Room {
         this.price = price;
         this.description = description;
         this.facilites = facilites;
+    }
+
+    public Room() {
     }
 
     public String getName() {
