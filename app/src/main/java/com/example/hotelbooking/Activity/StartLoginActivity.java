@@ -4,18 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.Image;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hotelbooking.R;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -25,6 +31,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -33,12 +40,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONObject;
+
 public class StartLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private TextView exit;
     private LoginButton loginFacebook;
     private SignInButton loginGoogle;
     private Button loginHotelBooking, createAccountHB;
-
+    ImageView avatar;
+    TextView txtName;
     GoogleApiClient mGoogleApiClient;
 
 
@@ -57,12 +67,17 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         loginHotelBooking = findViewById(R.id.login_hotelbooking_btn);
         createAccountHB = findViewById(R.id.create_account_btn);
 
+        txtName = findViewById(R.id.txtUsername);
+        avatar = findViewById(R.id.imageView);
+
 //        TextView textView = (TextView) loginGoogle.getChildAt(0);
 //        textView.setText("Continute with Google");
 
         loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                exit.setText("Login success");
+                getUserProfile(AccessToken.getCurrentAccessToken());
 //                exit.setText("User ID: " + loginResult.getAccessToken().getUserId() + "\n" +
 //                        "Auth Token: " + loginResult.getAccessToken().getToken());
             }
@@ -157,7 +172,9 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
 //        Intent intent=new Intent(StartLoginActivity.this,ProfileActivity.class);
 //        startActivity(intent);
         //---> link: https://www.javatpoint.com/android-googlesignin-integrating
+
         Toast.makeText(getApplicationContext(), "Sign in successed", Toast.LENGTH_LONG).show();
+
     }
 
     public static String printKeyHash(Activity context) {
@@ -195,6 +212,31 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+    public void getUserProfile(AccessToken accessToken){
+        GraphRequest request = GraphRequest.newMeRequest(
+                accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.d("TAG", object.toString());
+                        try {
+                            String first_name = object.getString("first name");
+                            String last_name = object.getString("last name");
+                            String id = object.getString("id");
+                            String img_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                            txtName.setText("First Name: " + first_name + "\nLast Name: " + last_name);
+                            Picasso.with(StartLoginActivity.this).load(img_url).into(avatar);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        Bundle p = new Bundle();
+        p.putString("fields", "first_name, last_name");
+        request.setParameters(p);
+        request.executeAsync();
     }
 
 }
