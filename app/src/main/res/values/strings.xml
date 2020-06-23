@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="facebook_app_id">1591866690989794</string>
+    <string name="fb_login_protocol_scheme">fb204127990172423</string>
     <string-array name="spinner_search">
         <item>1 Adults</item>
         <item>2 Adults</item>

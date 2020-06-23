@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:id="@+id/toolbar"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_btn_back_24"
+            >
+
+        </Button>
+        <TextView
+            android:id="@+id/title_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Profile"
+            android:layout_marginLeft="55dp"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            >
+
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
+    <ImageView
+        android:id="@+id/imageView"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="70dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/txtUsername"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="Username"
+        android:padding="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txtUsername"
+        android:text="Email Address"
+        android:padding="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/colorAccent"
+        tools:ignore="MissingConstraints" />
+    <Button
+        android:id="@+id/btnChangeInfor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtEmail"
+        android:layout_marginTop="50dp"
+        android:background="@android:color/white"
+        android:text="Change your profile"
+        android:textColor="@color/colorAccent"
+        android:gravity=""
+        android:drawableLeft="@drawable/ic__edit_24"
+        android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+        android:paddingLeft="20dp"
+        tools:ignore="MissingConstraints">
+
+    </Button>
+    <Button
+        android:id="@+id/btnBookingHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnChangeInfor"
+        android:background="@android:color/white"
+        android:text="Booking History"
+        android:textColor="@color/colorAccent"
+        android:gravity=""
+        android:drawableLeft="@drawable/ic_history_24"
+        android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+        android:paddingLeft="20dp"
+
+        tools:ignore="MissingConstraints">
+
+    </Button>
+    <Button
+        android:id="@+id/btnFaList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnBookingHistory"
+        android:background="@android:color/white"
+        android:text="Favuorite List"
+        android:textColor="@color/colorAccent"
+        android:gravity=""
+        android:drawableLeft="@drawable/ic_favorite_list_24"
+        android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+        android:paddingLeft="20dp"
+
+        tools:ignore="MissingConstraints">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnFaList"
+        android:background="@android:color/white"
+        android:text="Log out"
+        android:textColor="@color/colorRed"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+
+        tools:ignore="MissingConstraints">
+
+    </Button>
+</androidx.constraintlayout.widget.ConstraintLayout>

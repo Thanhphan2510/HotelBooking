@@ -22,6 +22,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -30,16 +31,25 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class StartLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -47,10 +57,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     private LoginButton loginFacebook;
     private SignInButton loginGoogle;
     private Button loginHotelBooking, createAccountHB;
-    ImageView avatar;
-    TextView txtName;
     GoogleApiClient mGoogleApiClient;
-
+    private FirebaseAuth mAuth;
 
     CallbackManager callbackManager;
     private static final int RC_SIGN_IN = 1;
@@ -60,26 +68,32 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_login);
         exit = findViewById(R.id.exit_tv);
-        callbackManager = CallbackManager.Factory.create();
 
+        mAuth = FirebaseAuth.getInstance();
         loginGoogle = findViewById(R.id.login_google_btn);
         loginFacebook = findViewById(R.id.login_facebook_btn);
         loginHotelBooking = findViewById(R.id.login_hotelbooking_btn);
         createAccountHB = findViewById(R.id.create_account_btn);
 
-        txtName = findViewById(R.id.txtUsername);
-        avatar = findViewById(R.id.imageView);
 
 //        TextView textView = (TextView) loginGoogle.getChildAt(0);
 //        textView.setText("Continute with Google");
 
+
+        loginFacebook.setReadPermissions(Arrays.asList("email","public_profile"));
+
+        callbackManager = CallbackManager.Factory.create();
+
         loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                exit.setText("Login success");
-                getUserProfile(AccessToken.getCurrentAccessToken());
-//                exit.setText("User ID: " + loginResult.getAccessToken().getUserId() + "\n" +
-//                        "Auth Token: " + loginResult.getAccessToken().getToken());
+//                boolean login = AccessToken.getCurrentAccessToken()== null ;
+//                Log.d("API123", login+"?");
+                handleFacebookAccessToken(loginResult.getAccessToken());
+
+//                exit.setText("Login success");
+
+
             }
 
             @Override
@@ -150,6 +164,47 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+
+            updateUI();
+        }
+    }
+
+    private void updateUI() {
+        Toast.makeText(StartLoginActivity.this, "You are login", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(StartLoginActivity.this, ActivityAccount.class);
+        startActivity(intent);
+        finish();
+    }
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("TAG", "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(StartLoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI();
+                        }
+                    }
+                });
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -213,30 +268,4 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-    public void getUserProfile(AccessToken accessToken){
-        GraphRequest request = GraphRequest.newMeRequest(
-                accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.d("TAG", object.toString());
-                        try {
-                            String first_name = object.getString("first name");
-                            String last_name = object.getString("last name");
-                            String id = object.getString("id");
-                            String img_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
-                            txtName.setText("First Name: " + first_name + "\nLast Name: " + last_name);
-                            Picasso.with(StartLoginActivity.this).load(img_url).into(avatar);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
-        Bundle p = new Bundle();
-        p.putString("fields", "first_name, last_name");
-        request.setParameters(p);
-        request.executeAsync();
-    }
-
 }
