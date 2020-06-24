@@ -23,6 +23,16 @@ public class Room implements Serializable {
     public Room() {
     }
 
+    @Override
+    public String toString() {
+        return "Room{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", facilites=" + facilites +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

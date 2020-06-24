@@ -101,12 +101,27 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_booking"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Booking Now"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp">
+        <Button
+            android:id="@+id/btn_booking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Booking"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/btn_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payment"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

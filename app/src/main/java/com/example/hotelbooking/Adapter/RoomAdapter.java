@@ -21,18 +21,20 @@ import androidx.annotation.Nullable;
 public class RoomAdapter extends ArrayAdapter<Room> {
     private Context context;
     private List<Room> rooms;
+    private List<Room> selectedRooms;
 
     public RoomAdapter(Context context, List<Room> rooms) {
         super(context, 0, rooms);
         this.context = context;
         this.rooms = rooms;
+        selectedRooms = new ArrayList<>();
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_room, parent, false);
-        Room room = rooms.get(position);
+        final Room room = rooms.get(position);
 
         TextView name = view.findViewById(R.id.tv_room);
         TextView facilites_1 = view.findViewById(R.id.facilites_1);
@@ -51,11 +53,15 @@ public class RoomAdapter extends ArrayAdapter<Room> {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Selected", Toast.LENGTH_LONG).show();
+               selectedRooms.add(room);
             }
         });
 
 
         return view;
+    }
+
+    public List<Room> getSelectedRooms() {
+        return selectedRooms;
     }
 }

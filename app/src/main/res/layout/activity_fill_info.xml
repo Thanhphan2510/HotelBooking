@@ -55,33 +55,20 @@
             android:id="@+id/edt_mobile_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="What's the primary purpose of your trip?"/>
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Business"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Leisure"
-                android:layout_marginLeft="40dp"/>
-        </RadioGroup>
+
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_next_step"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Next Step"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/btn_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Step"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="10dp"
+            />
+
+
 
 
 

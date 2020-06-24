@@ -1,15 +1,19 @@
 package com.example.hotelbooking.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Activity.MapActivity;
@@ -18,6 +22,7 @@ import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.Item.Room;
 import com.example.hotelbooking.R;
 import com.example.hotelbooking.Utils.MyUntil;
+import com.facebook.internal.CollectionMapper;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
@@ -34,6 +39,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +59,9 @@ import io.opencensus.internal.Utils;
  */
 public class FragmentHomeListItem extends Fragment {
     private ListView listView;
-    private Button mapBtn;
+    private Button mapBtn, sortBtn;
+
+
 
     ItemHomeAdapter itemHomeAdapter;
     ArrayList<HomeItem> items;
@@ -106,6 +115,77 @@ public class FragmentHomeListItem extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_list_item, container, false);
         listView = view.findViewById(R.id.items_home_listview);
         mapBtn = view.findViewById(R.id.title_map);
+        sortBtn = view.findViewById(R.id.title_sort);
+
+        final Dialog dialog = new Dialog(getContext());;
+        RadioButton radio_price, radio_star_05, radio_star_50;
+        dialog.setContentView(R.layout.dialog_sort);
+
+        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+        wmlp.x = 2;   //x position
+        wmlp.y = 3;   //y position
+
+        radio_price = dialog.findViewById(R.id.radio_price);
+        radio_star_05 = dialog.findViewById(R.id.radio_star_05);
+        radio_star_50 = dialog.findViewById(R.id.radio_star_50);
+        radio_price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.sort(items, new Comparator<HomeItem>() {
+                    @Override
+                    public int compare(HomeItem homeItem, HomeItem t1) {
+                        if (homeItem.getPrice() > t1.getPrice()) {
+                            return 1;
+                        }
+                        return -1;
+                    }
+                });
+                itemHomeAdapter.notifyDataSetChanged();
+                dialog.hide();
+            }
+        });
+        radio_star_50.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.sort(items, new Comparator<HomeItem>() {
+                    @Override
+                    public int compare(HomeItem homeItem, HomeItem t1) {
+                        if (homeItem.getStar() < t1.getStar()) {
+                            return 1;
+                        }
+                        return -1;
+                    }
+                });
+                itemHomeAdapter.notifyDataSetChanged();
+                dialog.hide();
+            }
+        });
+        radio_star_05.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.sort(items, new Comparator<HomeItem>() {
+                    @Override
+                    public int compare(HomeItem homeItem, HomeItem t1) {
+                        if (homeItem.getStar() > t1.getStar()) {
+                            return 1;
+                        }
+                        return -1;
+                    }
+                });
+                itemHomeAdapter.notifyDataSetChanged();
+                dialog.hide();
+            }
+        });
+
+        sortBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
+
+            }
+        });
+
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,8 +216,8 @@ public class FragmentHomeListItem extends Fragment {
 //                AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Intent intent = new Intent(getContext(), DetailItemActivity.class);
                 intent.putExtra("InfoClickedItem", homeItem);
-                intent.putExtra("checkinInfor",checkinStr);
-                intent.putExtra("checkoutInfor",checkoutStr);
+                intent.putExtra("checkinInfor", checkinStr);
+                intent.putExtra("checkoutInfor", checkoutStr);
                 startActivity(intent);
 
             }
@@ -175,7 +255,7 @@ public class FragmentHomeListItem extends Fragment {
                                     room_list.add(room_id);
                                 }
 
-                            }else{
+                            } else {
                                 //date thỏa mãn
                                 DocumentReference documentReference = database.collection("hotels").document(hotel_id);
                                 documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -190,16 +270,18 @@ public class FragmentHomeListItem extends Fragment {
                                                     String.valueOf(doc.get("description1")),
                                                     String.valueOf(doc.get("description2")),
                                                     String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                            Log.e("items", "onComplete: xử lý các trường hợp date  thỏa mãn "+items.toString() );
+                                            Log.e("items", "onComplete: xử lý các trường hợp date  thỏa mãn " + items.toString());
 
                                             //check exist hotel in list
                                             boolean exist = false;
-                                            for(HomeItem item1 : items){
-                                                if(item1.getId().equals(item.getId())){{
-                                                    exist = true;
-                                                }}
+                                            for (HomeItem item1 : items) {
+                                                if (item1.getId().equals(item.getId())) {
+                                                    {
+                                                        exist = true;
+                                                    }
+                                                }
                                             }
-                                            if(exist==false){
+                                            if (exist == false) {
                                                 items.add(item);
                                             }
 
@@ -243,15 +325,17 @@ public class FragmentHomeListItem extends Fragment {
                                                                 String.valueOf(doc.get("description1")),
                                                                 String.valueOf(doc.get("description2")),
                                                                 String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn "+items.toString() );
+                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn " + items.toString());
                                                         //check exist hotel in list
                                                         boolean exist = false;
-                                                        for(HomeItem item1 : items){
-                                                            if(item1.getId().equals(item.getId())){{
-                                                                exist = true;
-                                                            }}
+                                                        for (HomeItem item1 : items) {
+                                                            if (item1.getId().equals(item.getId())) {
+                                                                {
+                                                                    exist = true;
+                                                                }
+                                                            }
                                                         }
-                                                        if(exist==false){
+                                                        if (exist == false) {
                                                             items.add(item);
                                                         }
 
@@ -286,7 +370,7 @@ public class FragmentHomeListItem extends Fragment {
                                     for (QueryDocumentSnapshot doc : task.getResult()) {
                                         int total = new Integer(String.valueOf(doc.get("total")));
                                         int leftroom = new Integer(String.valueOf(doc.get("leftroom")));
-                                        if(total==leftroom){
+                                        if (total == leftroom) {
                                             String hotelID = String.valueOf(doc.get("hotelID"));
                                             DocumentReference documentReference = database.collection("hotels").document(hotelID);
                                             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -301,16 +385,18 @@ public class FragmentHomeListItem extends Fragment {
                                                                 String.valueOf(doc.get("description1")),
                                                                 String.valueOf(doc.get("description2")),
                                                                 String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                        Log.e("items", "onComplete: các trường hợp room chưa có ai book "+items.toString() );
+                                                        Log.e("items", "onComplete: các trường hợp room chưa có ai book " + items.toString());
 
                                                         //check exist hotel in list
                                                         boolean exist = false;
-                                                        for(HomeItem item1 : items){
-                                                            if(item1.getId().equals(item.getId())){{
-                                                                exist = true;
-                                                            }}
+                                                        for (HomeItem item1 : items) {
+                                                            if (item1.getId().equals(item.getId())) {
+                                                                {
+                                                                    exist = true;
+                                                                }
+                                                            }
                                                         }
-                                                        if(exist==false){
+                                                        if (exist == false) {
                                                             items.add(item);
                                                         }
 

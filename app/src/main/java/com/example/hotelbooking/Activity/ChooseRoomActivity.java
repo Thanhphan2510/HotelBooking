@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class ChooseRoomActivity extends AppCompatActivity {
     private Button reserveBtn;
     RoomAdapter roomAdapter;
     ArrayList<Room> rooms;
+    ArrayList<Room> selectedRooms;
     Room room;
     String itemID; //HotelID
 
@@ -40,11 +42,17 @@ public class ChooseRoomActivity extends AppCompatActivity {
         reserveBtn = findViewById(R.id.reserve_btn);
 
         rooms = new ArrayList<>();
+        selectedRooms = new ArrayList<>();
+
         room = new Room();
 
         Intent intent = getIntent();
         HomeItem item = (HomeItem) intent.getSerializableExtra("InfoClickedItem");
         itemID = item.getId();
+
+        final String checkin_str = intent.getStringExtra("checkinInfor");
+        final String checkout_str = intent.getStringExtra("checkoutInfor");
+
 
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -60,39 +68,27 @@ public class ChooseRoomActivity extends AppCompatActivity {
                                 String.valueOf(doc.get("description")),
                                 facilites);
                         rooms.add(room);
-
                         roomAdapter.notifyDataSetChanged();
                     }
                 }
             }
         });
 
-//        ArrayList<String> facilites = new ArrayList<>();
-//        facilites.add("Free Wifi");
-//        facilites.add("Free Wifi");
-//        facilites.add("Free Wifi");
-//        rooms.add(new Room("Single Room", 20000, "Only 1 room left on HotelBooking. \nThis is description", facilites));
-//        rooms.add(new Room("Double Room", 40000, "Only 1 room left on HotelBooking. \nThis is description", facilites));
-//        rooms.add(new Room("Twice", 20000, "Only 1 room left on HotelBooking. \nThis is description", facilites));
-//        rooms.add(new Room("Sea Room", 20000, "Only 1 room left on HotelBooking. \nThis is description", facilites));
+
         roomAdapter = new RoomAdapter(getApplicationContext(), rooms);
         listView.setAdapter(roomAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                roomAdapter.notifyDataSetChanged();
-                 room = (Room) listView.getItemAtPosition(i);
 
-
-            }
-        });
         reserveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Intent intent = new Intent(activity.getApplicationContext(), FillInfoActivity.class);
-                intent.putExtra("InfoClickedRoom", room);
+                selectedRooms.addAll(roomAdapter.getSelectedRooms());
+                intent.putExtra("InfoClickedRooms", selectedRooms);
+                Log.e("selectedRooms", "onClick: "+selectedRooms.toString() );
                 intent.putExtra("HoteID", itemID);
+                intent.putExtra("checkinInfor", checkin_str);
+                intent.putExtra("checkoutInfor",checkout_str);
                 activity.startActivity(intent);
 
             }

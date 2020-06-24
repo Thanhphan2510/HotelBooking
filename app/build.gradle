@@ -53,4 +53,6 @@ dependencies {
     //doc of util: https://github.com/googlemaps/android-maps-utils
     implementation 'com.google.maps.android:android-maps-utils:2.0.0'
 
+    implementation 'com.android.billingclient:billing:3.0.0'
+
 }
