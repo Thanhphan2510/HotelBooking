@@ -107,16 +107,17 @@ public class ActivityAccount extends AppCompatActivity {
             currentAccessToken, new GraphRequest.GraphJSONObjectCallback() {
                 @Override
                 public void onCompleted(JSONObject object, GraphResponse response) {
-                    Log.d("TAG", object.toString());
+                    Log.e("TAG", object.toString());
                     try {
                         String first_name = object.getString("first_name");
                         String last_name = object.getString("last_name");
-                        String email = object.getString("email");
+                        String email = object.getString("email")+"";
                         String id = object.getString("id");
                         String img_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
                         txtName.setText("Name: " + last_name + " " + first_name);
                         txtEmail.setText(email);
                         Picasso.with(ActivityAccount.this).load(img_url).into(avatar);
+                        Log.e("TAG", object.toString());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
