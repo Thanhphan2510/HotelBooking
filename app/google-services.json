@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:847758651184:android:389b2c380cb2f61af562f5",
+        "mobilesdk_app_id": "1:847758651184:android:8286970354a2d4a0f562f5",
         "android_client_info": {
           "package_name": "com.example.hotelbooking"
         }
@@ -21,7 +21,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyChKqzcXhIDF-8hGV5FfJQ4FK7U_YTRfag"
+          "current_key": "AIzaSyD4yUUYwUr1PG57kkPMFqPOLqrEVMHul94"
         }
       ],
       "services": {

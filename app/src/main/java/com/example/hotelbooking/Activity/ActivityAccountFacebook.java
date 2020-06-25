@@ -1,6 +1,5 @@
 package com.example.hotelbooking.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -23,26 +22,18 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
-public class ActivityAccount extends AppCompatActivity {
+public class ActivityAccountFacebook extends AppCompatActivity {
     private ImageView avatar;
     private TextView txtName, txtEmail;
     private Button btnBack, btnChangeInfor, btnBookingHistory, btnFavouriteList;
     private Button btnLogout;
-    private GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount acct;
+//    GoogleSignInAccount acct;
 //    FirebaseAuth auth;
 
     @Override
@@ -58,7 +49,7 @@ public class ActivityAccount extends AppCompatActivity {
         btnBookingHistory = findViewById(R.id.btnBookingHistory);
         btnFavouriteList = findViewById(R.id.btnFaList);
         btnLogout = (Button) findViewById(R.id.btnLogout);
-        acct = GoogleSignIn.getLastSignedInAccount(this);
+//        acct = GoogleSignIn.getLastSignedInAccount(this);
 
         final boolean logout = AccessToken.getCurrentAccessToken() == null;
         if(!logout){
@@ -67,7 +58,8 @@ public class ActivityAccount extends AppCompatActivity {
             Log.d("TAG", "Username:" + Profile.getCurrentProfile().getName());
             getUserProfile(AccessToken.getCurrentAccessToken());
         }
-//        else if(acct!= null){
+
+//        if(acct!= null){
 //            //get information of account google
 //            String personName = acct.getDisplayName();
 //            String personEmail = acct.getEmail();
@@ -81,7 +73,7 @@ public class ActivityAccount extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityAccount.this, HomeActivity.class);
+                Intent intent = new Intent(ActivityAccountFacebook.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -96,10 +88,10 @@ public class ActivityAccount extends AppCompatActivity {
         });
     }
     private void updateUI() {
-        Toast.makeText(ActivityAccount.this, "You are logout", Toast.LENGTH_LONG).show();
-        Intent refresh = new Intent(this, ActivityAccount.class);
+
+        finish(); Toast.makeText(ActivityAccountFacebook.this, "You are logout", Toast.LENGTH_LONG).show();
+        Intent refresh = new Intent(this, ActivityAccountFacebook.class);
         startActivity(refresh);
-//        finish();
     }
     private void getUserProfile(AccessToken currentAccessToken) {
 
@@ -116,7 +108,7 @@ public class ActivityAccount extends AppCompatActivity {
                         String img_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
                         txtName.setText("Name: " + last_name + " " + first_name);
                         txtEmail.setText(email);
-                        Picasso.with(ActivityAccount.this).load(img_url).into(avatar);
+                        Picasso.with(ActivityAccountFacebook.this).load(img_url).into(avatar);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

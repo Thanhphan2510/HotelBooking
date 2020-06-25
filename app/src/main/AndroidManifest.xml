@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hotelbooking">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -12,6 +13,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <meta-data android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -19,7 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ActivityAccount"></activity>
+        <activity android:name=".Activity.ActivityAccountFacebook"></activity>
         <activity android:name=".Activity.MapActivity" />
         <activity android:name=".Activity.CreateAccountHB" />
         <activity android:name=".Activity.LoginAccountHB" />
@@ -32,7 +37,8 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            tools:ignore="DuplicateActivity" />
         <activity
             android:name=".Activity.WelcomeActivity"
             android:exported="true">
