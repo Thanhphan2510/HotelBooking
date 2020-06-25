@@ -48,6 +48,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    compile 'de.hdodenhof:circleimageview:1.2.1'
+
+
+
 
     // Utilities for Maps SDK for Android
     //doc of util: https://github.com/googlemaps/android-maps-utils

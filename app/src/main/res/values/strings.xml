@@ -4,10 +4,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="facebook_app_id">1591866690989794</string>
+    <string name="fb_login_protocol_scheme">fb204127990172423</string>
     <string-array name="spinner_search">
         <item>1 Adults</item>
         <item>2 Adults</item>
         <item>Families</item>
         <item>Groups</item>
     </string-array>
+    <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
 </resources>

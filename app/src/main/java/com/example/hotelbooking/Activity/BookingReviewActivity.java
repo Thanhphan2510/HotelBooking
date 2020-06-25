@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hotelbooking.Adapter.RoomBookingReviewAdapter;
-import com.example.hotelbooking.FireStoreItem.Book;
 import com.example.hotelbooking.Item.BookingInfo;
 import com.example.hotelbooking.Item.BookingReviewRoom;
 import com.example.hotelbooking.Item.HomeItem;
@@ -58,7 +57,6 @@ public class BookingReviewActivity extends AppCompatActivity {
         selectedRooms = new ArrayList<>();
         selectedRooms.addAll(bookingInfo.getRooms());
 
-        Book book = new Book();
 
         rooms = new ArrayList<>();
         for (Room room : selectedRooms) {
