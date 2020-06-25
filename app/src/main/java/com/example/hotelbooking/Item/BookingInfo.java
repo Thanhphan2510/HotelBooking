@@ -1,5 +1,7 @@
 package com.example.hotelbooking.Item;
 
+import com.google.firebase.Timestamp;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,18 +10,6 @@ public class BookingInfo implements Serializable {
     private String hotelID;
     private ArrayList<Room> rooms;
     private String checkin, checkout;
-
-    public BookingInfo(String firstName, String lastName, String email, String country, String phone, String hotelID, ArrayList<Room> rooms, String checkin, String checkout) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.country = country;
-        this.phone = phone;
-        this.hotelID = hotelID;
-        this.rooms = rooms;
-        this.checkin = checkin;
-        this.checkout = checkout;
-    }
 
     public String getCheckin() {
         return checkin;
@@ -34,6 +24,18 @@ public class BookingInfo implements Serializable {
     }
 
     public void setCheckout(String checkout) {
+        this.checkout = checkout;
+    }
+
+    public BookingInfo(String firstName, String lastName, String email, String country, String phone, String hotelID, ArrayList<Room> rooms, String checkin, String checkout) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.country = country;
+        this.phone = phone;
+        this.hotelID = hotelID;
+        this.rooms = rooms;
+        this.checkin = checkin;
         this.checkout = checkout;
     }
 

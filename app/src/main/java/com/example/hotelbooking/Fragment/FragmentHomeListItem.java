@@ -62,7 +62,6 @@ public class FragmentHomeListItem extends Fragment {
     private Button mapBtn, sortBtn;
 
 
-
     ItemHomeAdapter itemHomeAdapter;
     ArrayList<HomeItem> items;
     HomeItem item;
@@ -77,7 +76,7 @@ public class FragmentHomeListItem extends Fragment {
     int total, bookedTotal;
     int checkBookedRoom = -1;
 
-    HashMap<String, Integer> hotelID_roomID;
+    HashMap<String, Integer> hotelID_roomID; //khách sạn đã có phòng booked_số lượng phòng đc book của roomID
     ArrayList<String> roomIDs;
 
     public FragmentHomeListItem() {
@@ -117,7 +116,8 @@ public class FragmentHomeListItem extends Fragment {
         mapBtn = view.findViewById(R.id.title_map);
         sortBtn = view.findViewById(R.id.title_sort);
 
-        final Dialog dialog = new Dialog(getContext());;
+        final Dialog dialog = new Dialog(getContext());
+        ;
         RadioButton radio_price, radio_star_05, radio_star_50;
         dialog.setContentView(R.layout.dialog_sort);
 
@@ -222,11 +222,14 @@ public class FragmentHomeListItem extends Fragment {
 
             }
         });
+
+        //Fuction add hotel by checkin, checkout
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
         CollectionReference reference1 = database.collection("book");
         reference1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         String hotel_id = String.valueOf(doc.get("hotelID"));
@@ -237,6 +240,7 @@ public class FragmentHomeListItem extends Fragment {
 
                         Timestamp checkoutTS = (Timestamp) doc.get("checkout");
                         Date checkoutDate_Data = checkoutTS.toDate();
+
                         ArrayList<String> room_list = new ArrayList<>();
                         try {
                             Date checkinDate = MyUntil.covertStringtoDate(checkinStr);
@@ -249,14 +253,79 @@ public class FragmentHomeListItem extends Fragment {
                                 if (!hotelID_roomID.containsKey(hotel_id)) {
                                     hotelID_roomID.put(hotel_id, 1);
                                     room_list.add(room_id);
+                                    Log.e("check roomID", "!hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
                                     bookedHotelIDs.add(hotel_id);
                                 } else {
                                     hotelID_roomID.replace(hotel_id, hotelID_roomID.get(hotel_id).intValue() + 1);
                                     room_list.add(room_id);
+                                    Log.e("check roomID", "hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
                                 }
+                                //xử lý các trường hợp date không thỏa mãn
+                                Log.e("check roomID", "các trường hợp date không thỏa mãn: " + hotel_id + " " + room_list.toString());
+                                roomIDs.addAll(room_list);
+                                for (int i = 0; i < bookedHotelIDs.size(); i++) {
+//                                    Log.e("check roomID", "hotelID_roomID.get(bookedHotelIDs.get(i)): " + );
+                                    if (hotelID_roomID.containsKey((bookedHotelIDs.get(i)))) {
+                                        int value = 0;
+                                        value = hotelID_roomID.get(bookedHotelIDs.get(i)).intValue();
+                                        Log.e("check roomID", "onComplete: " + value);
+                                        for (int j = 0; j < value; j++) {
+                                            Log.e("check roomID", "onComplete: " + roomIDs.get(j));
+                                            DocumentReference documentReference = database.collection("hotels")
+                                                    .document(bookedHotelIDs.get(i)).collection("rooms")
+                                                    .document(roomIDs.get(j));
+                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                                        int leftRoom = new Integer(String.valueOf(documentSnapshot.get("leftroom")));
+                                                        String hotelID = String.valueOf(documentSnapshot.get("hotelID"));
 
+                                                        //nếu date không thỏa mãn nhưng phòng trống >0 -> OK
+                                                        if (leftRoom > 0) {
+                                                            DocumentReference documentReference = database.collection("hotels").document(hotelID);
+                                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        DocumentSnapshot doc = task.getResult();
+                                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
+                                                                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                                                new Long(String.valueOf(doc.get("star"))).floatValue(),
+                                                                                new Integer(String.valueOf(doc.get("price"))),
+                                                                                String.valueOf(doc.get("description1")),
+                                                                                String.valueOf(doc.get("description2")),
+                                                                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn " + items.toString());
+                                                                        //check exist hotel in list
+                                                                        boolean exist = false;
+                                                                        for (HomeItem item1 : items) {
+                                                                            if (item1.getId().equals(item.getId())) {
+                                                                                {
+                                                                                    exist = true;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (exist == false) {
+                                                                            items.add(item);
+                                                                        }
+
+                                                                        itemHomeAdapter.notifyDataSetChanged();
+
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
                             } else {
-                                //date thỏa mãn
+                                //date thỏa mãn ->OK
                                 DocumentReference documentReference = database.collection("hotels").document(hotel_id);
                                 documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
@@ -296,65 +365,11 @@ public class FragmentHomeListItem extends Fragment {
                         }
                     }
                 }
-                //xử lý các trường hợp date không thỏa mãn
-                for (int i = 0; i < bookedHotelIDs.size(); i++) {
-                    if (hotelID_roomID.containsKey(hotelID_roomID.get(bookedHotelIDs.get(i)))) {
-                        int value = hotelID_roomID.get(bookedHotelIDs.get(i)).intValue();
-                        for (int j = 0; j < value; j++) {
-                            DocumentReference documentReference = database.collection("hotels")
-                                    .document(hotelIDs.get(i)).collection("rooms")
-                                    .document(roomIDs.get(j));
-                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot documentSnapshot = task.getResult();
-                                        int leftRoom = new Integer(String.valueOf(documentSnapshot.get("leftroom")));
-                                        String hotelID = String.valueOf(documentSnapshot.get("hotelID"));
-                                        if (leftRoom > 0) {
-                                            DocumentReference documentReference = database.collection("hotels").document(hotelID);
-                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot doc = task.getResult();
-                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
-                                                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
-                                                                new Long(String.valueOf(doc.get("star"))).floatValue(),
-                                                                new Integer(String.valueOf(doc.get("price"))),
-                                                                String.valueOf(doc.get("description1")),
-                                                                String.valueOf(doc.get("description2")),
-                                                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn " + items.toString());
-                                                        //check exist hotel in list
-                                                        boolean exist = false;
-                                                        for (HomeItem item1 : items) {
-                                                            if (item1.getId().equals(item.getId())) {
-                                                                {
-                                                                    exist = true;
-                                                                }
-                                                            }
-                                                        }
-                                                        if (exist == false) {
-                                                            items.add(item);
-                                                        }
 
-                                                        itemHomeAdapter.notifyDataSetChanged();
 
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-
-                                }
-                            });
-                        }
-                    }
-                }
             }
         });
-//các trường hợp room chưa có ai book
+        //các trường hợp room chưa có ai book ( All room are empty)
         final CollectionReference reference = database.collection("hotels");
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

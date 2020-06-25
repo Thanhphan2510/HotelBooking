@@ -63,8 +63,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-//                exit.setText("User ID: " + loginResult.getAccessToken().getUserId() + "\n" +
-//                        "Auth Token: " + loginResult.getAccessToken().getToken());
+                exit.setText("User ID: " + loginResult.getAccessToken().getUserId() + "\n" +
+                        "Auth Token: " + loginResult.getAccessToken().getToken());
             }
 
             @Override

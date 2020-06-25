@@ -7,30 +7,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Room implements Serializable {
-    private String name;
+    private String roomID, name;
     private int price;
     private String description;
     @PropertyName("facilites")
     private List<String> facilites;
 
-    public Room(String name, int price, String description, List<String> facilites) {
+    public Room(String roomID, String name, int price, String description, List<String> facilites) {
+        this.roomID = roomID;
         this.name = name;
         this.price = price;
         this.description = description;
         this.facilites = facilites;
     }
 
-    public Room() {
-    }
-
     @Override
     public String toString() {
         return "Room{" +
-                "name='" + name + '\'' +
+                "roomID='" + roomID + '\'' +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", facilites=" + facilites +
                 '}';
+    }
+
+    public Room() {
+    }
+
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
     }
 
     public String getName() {

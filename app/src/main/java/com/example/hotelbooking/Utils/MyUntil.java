@@ -26,11 +26,11 @@ public class MyUntil {
         return timestamp;
     }
     public static Date covertStringtoDate(String str_date) throws ParseException {
-//        String dtStart = "2010-10-15T09:27:37Z";
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date date = format.parse(str_date);
         return date;
     }
+
 
 
 }
