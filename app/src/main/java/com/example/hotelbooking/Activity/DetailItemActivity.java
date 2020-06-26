@@ -77,7 +77,8 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
         item = (HomeItem) intent.getSerializableExtra("InfoClickedItem");
 
         Log.e("thanhphan", "item:"+item.toString() );
-        Picasso.with(this.getApplicationContext()).load(item.getImageView()).into(hotelImmage);
+        //get image???
+        Picasso.with(this.getApplicationContext()).load(item.getImageView()).resize(2048, 1600).onlyScaleDown().into(hotelImmage);
         hotelName.setText(item.getName());
         hotelRating.setRating(item.getRating());
 

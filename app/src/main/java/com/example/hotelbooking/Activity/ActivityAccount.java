@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,8 +39,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ActivityAccount extends AppCompatActivity {
-    private ImageView avatar;
+    private CircleImageView avatar;
     private TextView txtName, txtEmail;
     private Button btnBack, btnChangeInfor, btnBookingHistory, btnFavouriteList;
     private Button btnLogout;
@@ -50,6 +54,7 @@ public class ActivityAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_new);
+//
 
         txtName = findViewById(R.id.txtUsername);
         avatar = findViewById(R.id.imageView);
@@ -59,6 +64,8 @@ public class ActivityAccount extends AppCompatActivity {
         btnBookingHistory = findViewById(R.id.btnBookingHistory);
         btnFavouriteList = findViewById(R.id.btnFaList);
         btnLogout = (Button) findViewById(R.id.btnLogout);
+
+
 
         mAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {

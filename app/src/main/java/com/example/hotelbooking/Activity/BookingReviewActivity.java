@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.hotelbooking.Adapter.RoomBookingReviewAdapter;
 import com.example.hotelbooking.Item.BookingInfo;
@@ -22,6 +23,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,6 +70,27 @@ public class BookingReviewActivity extends AppCompatActivity {
 
 
         }
+//        FirebaseDatabase databasetest = FirebaseDatabase.getInstance();
+//        final DatabaseReference myRef = databasetest.getReference("users/uid_of_first_user");
+//
+//        // Read from the database
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                User value = dataSnapshot.getValue(User.class);
+//                Log.d("", "Value is: " + value);
+//                Toast.makeText(BookingReviewActivity.this,"get value success",Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w("", "Failed to read value.", error.toException());
+//                Toast.makeText(BookingReviewActivity.this,"get value fail",Toast.LENGTH_LONG).show();
+//            }
+//        });
 
 //
 //
@@ -86,7 +113,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    final String clientID = "thanhphan";
+                    final String clientID = "thanh phan";
                     docData.put("hotelID", bookingInfo.getHotelID());
                     docData.put("roomID", room.getRoomID());
                     docData.put("clientID", clientID);
