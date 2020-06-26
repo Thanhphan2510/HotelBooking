@@ -1,5 +1,7 @@
 package com.example.hotelbooking.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,23 +21,31 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ActivityAccountFacebook extends AppCompatActivity {
+public class ActivityAccount extends AppCompatActivity {
     private ImageView avatar;
     private TextView txtName, txtEmail;
     private Button btnBack, btnChangeInfor, btnBookingHistory, btnFavouriteList;
     private Button btnLogout;
-//    GoogleSignInAccount acct;
-//    FirebaseAuth auth;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    GoogleSignInAccount account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,31 +59,38 @@ public class ActivityAccountFacebook extends AppCompatActivity {
         btnBookingHistory = findViewById(R.id.btnBookingHistory);
         btnFavouriteList = findViewById(R.id.btnFaList);
         btnLogout = (Button) findViewById(R.id.btnLogout);
-//        acct = GoogleSignIn.getLastSignedInAccount(this);
 
+        mAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null){
+//                    getProfileGoogle(mAuth.getCurrentUser());
+                }
+                else {
+                }
+            }
+        };
+
+//
+//        acct = GoogleSignIn.getLastSignedInAccount(this);
+        //login with facebook
         final boolean logout = AccessToken.getCurrentAccessToken() == null;
         if(!logout){
             Picasso.with(this).load(Profile.getCurrentProfile().
                     getProfilePictureUri(200,200)).into(avatar);
             Log.d("TAG", "Username:" + Profile.getCurrentProfile().getName());
-            getUserProfile(AccessToken.getCurrentAccessToken());
+            getUserProfileFacebook(AccessToken.getCurrentAccessToken());
         }
 
-//        if(acct!= null){
-//            //get information of account google
-//            String personName = acct.getDisplayName();
-//            String personEmail = acct.getEmail();
-//            Uri personPhoto = acct.getPhotoUrl();
-//
-//            txtName.setText(personName);
-//            txtEmail.setText(personEmail);
-//            Glide.with(this).load(String.valueOf(personPhoto)).into(avatar);
-//
-//        }
+        if(mAuth.getCurrentUser() != null){
+            getProfileGoogle(mAuth.getCurrentUser());
+        }
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ActivityAccountFacebook.this, HomeActivity.class);
+                Intent intent = new Intent(ActivityAccount.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -81,19 +98,35 @@ public class ActivityAccountFacebook extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                FirebaseAuth.getInstance().signOut();
+                mAuth.signOut();
                 LoginManager.getInstance().logOut();
                 updateUI();
             }
         });
     }
+
+
     private void updateUI() {
 
-        finish(); Toast.makeText(ActivityAccountFacebook.this, "You are logout", Toast.LENGTH_LONG).show();
-        Intent refresh = new Intent(this, ActivityAccountFacebook.class);
+        finish(); Toast.makeText(ActivityAccount.this, "You are logout", Toast.LENGTH_LONG).show();
+        Intent refresh = new Intent(this, ActivityAccount.class);
         startActivity(refresh);
     }
-    private void getUserProfile(AccessToken currentAccessToken) {
+
+
+    private void getProfileGoogle(FirebaseUser firebaseUser){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if(acct!=null){
+            String user_name = acct.getDisplayName();
+            String user_email = acct.getEmail();
+            Uri user_photo = acct.getPhotoUrl();
+            txtName.setText(user_name);
+            txtEmail.setText(user_email);
+            Glide.with(this).load(String.valueOf(user_photo)).into(avatar);
+        }
+
+    }
+    private void getUserProfileFacebook(AccessToken currentAccessToken) {
 
         GraphRequest request = GraphRequest.newMeRequest(
             currentAccessToken, new GraphRequest.GraphJSONObjectCallback() {
@@ -108,7 +141,7 @@ public class ActivityAccountFacebook extends AppCompatActivity {
                         String img_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
                         txtName.setText("Name: " + last_name + " " + first_name);
                         txtEmail.setText(email);
-                        Picasso.with(ActivityAccountFacebook.this).load(img_url).into(avatar);
+                        Picasso.with(ActivityAccount.this).load(img_url).into(avatar);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
