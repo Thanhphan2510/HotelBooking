@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,11 +57,14 @@ public class FillInfoActivity extends AppCompatActivity {
                         checkout_str);
 
                 intent1.putExtra("BookingInfo", bookingInfo);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 activity.startActivity(intent1);
 
             }
         });
-
-
-    }
+            }
+//  @Override
+//  public void onBackPressed() {
+//      startActivity(new Intent(this, ChooseRoomActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+//  }
 }

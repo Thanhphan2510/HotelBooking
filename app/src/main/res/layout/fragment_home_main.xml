@@ -24,7 +24,8 @@
                 android:orientation="horizontal"
                 android:background="@null">
 
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/search_autocomplete"
                     android:layout_width="201dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"

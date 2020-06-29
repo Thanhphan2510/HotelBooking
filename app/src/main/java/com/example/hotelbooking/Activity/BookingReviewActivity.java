@@ -6,9 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hotelbooking.Adapter.RoomBookingReviewAdapter;
 import com.example.hotelbooking.Item.BookingInfo;
@@ -35,10 +39,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class BookingReviewActivity extends AppCompatActivity {
     private ListView roomListView;
-    private Button bookingBtn, paymentBtn;
+    private Button bookingBtn;
+    private TextView checkin_tv, checkout_tv, night_tv,price_tv;
     RoomBookingReviewAdapter adapter;
     List<BookingReviewRoom> rooms;
     ArrayList<Room> selectedRooms;
@@ -50,29 +56,61 @@ public class BookingReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking_review);
         roomListView = findViewById(R.id.listview_room_bookingreview);
         bookingBtn = findViewById(R.id.btn_booking);
-        paymentBtn = findViewById(R.id.btn_payment);
+        checkin_tv = findViewById(R.id.checkin_tv);
+        checkout_tv = findViewById(R.id.checkout_tv);
+        price_tv = findViewById(R.id.price_tv);
+        night_tv = findViewById(R.id.night_tv);
+
+
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
         bookingInfo = (BookingInfo) intent.getSerializableExtra("BookingInfo");
         selectedRooms = new ArrayList<>();
         selectedRooms.addAll(bookingInfo.getRooms());
-
+        checkin_tv.setText(bookingInfo.getCheckin());
+        checkout_tv.setText(bookingInfo.getCheckout());
 
         rooms = new ArrayList<>();
+        int price = 0;
         for (Room room : selectedRooms) {
             rooms.add(new BookingReviewRoom(room.getName(), room.getPrice()));
-
-
+            price += room.getPrice();
         }
 
-//
-//
-//
-//        rooms.add(new BookingReviewRoom("Single Room",200000));
-//        rooms.add(new BookingReviewRoom("Double Room",300000));
+        long diff = 0;
+        try {
+            diff = MyUntil.covertStringtoDate(bookingInfo.getCheckout()).getTime() - MyUntil.covertStringtoDate(bookingInfo.getCheckin()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        night_tv.setText(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+" nights");
+        price_tv.setText("VND "+price*TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+
         adapter = new RoomBookingReviewAdapter(getApplicationContext(), rooms);
         roomListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+
+        roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                rooms.remove(i);
+                selectedRooms.remove(i);
+                int finalPrice = 0;
+                for (Room room : selectedRooms) {
+                     finalPrice += room.getPrice();
+                }
+                long diff = 0;
+                try {
+                    diff = MyUntil.covertStringtoDate(bookingInfo.getCheckout()).getTime() - MyUntil.covertStringtoDate(bookingInfo.getCheckin()).getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                price_tv.setText("VND "+finalPrice*TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         bookingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +133,10 @@ public class BookingReviewActivity extends AppCompatActivity {
                     docData.put("email", bookingInfo.getEmail());
                     docData.put("phone", bookingInfo.getPhone());
                     docData.put("country", bookingInfo.getCountry());
+
+
+
+                    //add booking room to database
                     final String bookID = new Random().nextInt() + "";
 
                     Task<Void> documentReference = database.collection("book").document(bookID).set(docData)
@@ -111,12 +153,12 @@ public class BookingReviewActivity extends AppCompatActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Log.e("thanhphan", "book in client successfully written!");
+                                                    Toast.makeText(getApplicationContext(),"Booked Success",Toast.LENGTH_LONG).show();
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    Log.e("thanhphan", "DocumentSnapshot fail written!");
+                                                    Toast.makeText(getApplicationContext(),"Booked Fail",Toast.LENGTH_LONG).show();
                                                 }
                                             });
                                     Log.e("thanhphan", "onSuccess: " + room.toString());
@@ -143,7 +185,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.e("thanhphan", "DocumentSnapshot fail written!");
+                                    Toast.makeText(getApplicationContext(),"Booked Fail",Toast.LENGTH_LONG).show();
                                 }
                             });
                 }
@@ -151,4 +193,5 @@ public class BookingReviewActivity extends AppCompatActivity {
         });
 
     }
+
 }

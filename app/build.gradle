@@ -52,6 +52,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.2.1'
 
 
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
 
     // Utilities for Maps SDK for Android

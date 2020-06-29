@@ -78,6 +78,8 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
 
         Log.e("thanhphan", "item:"+item.toString() );
         Picasso.with(this.getApplicationContext()).load(item.getImageView()).into(hotelImmage);
+
+
         hotelName.setText(item.getName());
         hotelRating.setRating(item.getRating());
 
@@ -131,6 +133,7 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
                 intent.putExtra("InfoClickedItem", item);
                 intent.putExtra("checkinInfor", checkinBtn.getText().toString());
                 intent.putExtra("checkoutInfor", checkoutBtn.getText().toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 activity.startActivity(intent);
 
             }

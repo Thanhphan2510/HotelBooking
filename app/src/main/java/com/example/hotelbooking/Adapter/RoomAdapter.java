@@ -54,6 +54,7 @@ public class RoomAdapter extends ArrayAdapter<Room> {
             @Override
             public void onClick(View view) {
                selectedRooms.add(room);
+               Toast.makeText(getContext(),"Selected "+selectedRooms.size()+" rooms",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -63,5 +64,9 @@ public class RoomAdapter extends ArrayAdapter<Room> {
 
     public List<Room> getSelectedRooms() {
         return selectedRooms;
+    }
+    public void clearSelectedRooms(){
+        selectedRooms.clear();
+        selectedRooms = new ArrayList<>();
     }
 }

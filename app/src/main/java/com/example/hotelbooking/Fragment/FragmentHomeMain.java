@@ -3,18 +3,29 @@ package com.example.hotelbooking.Fragment;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.example.hotelbooking.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +35,7 @@ import java.util.Calendar;
 public class FragmentHomeMain extends Fragment {
     private Button searchBtn, checkinBtn, checkoutBtn;
     private int mYear, mMonth, mDay;
+    private AutoCompleteTextView autoCompleteTextView;
 
     String checkinStr, checkoutStr;
 
@@ -55,18 +67,49 @@ public class FragmentHomeMain extends Fragment {
         searchBtn = view.findViewById(R.id.search_btn);
         checkinBtn = view.findViewById(R.id.checkin_button);
         checkoutBtn = view.findViewById(R.id.checkout_button);
+
+        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+        final List<String> hotelNames = new ArrayList<>();
+        autoCompleteTextView = view.findViewById(R.id.search_autocomplete);
+        final ArrayAdapter searchAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,hotelNames);
+        autoCompleteTextView.setAdapter(searchAdapter);
+        searchAdapter.notifyDataSetChanged();
+        autoCompleteTextView.setThreshold(1);
+        CollectionReference reference = database.collection("hotels");
+                reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        String name = String.valueOf(documentSnapshot.get("name"));
+                        hotelNames.add(name);
+                        searchAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle=new Bundle();
-                bundle.putString("checkin", checkinStr);
-                bundle.putString("checkout", checkoutStr);
 
+                if(autoCompleteTextView.getText().toString().equals("")){
+                    String pass ="2;"+checkinStr+";"+checkoutStr;
+                    bundle.putString("pass",pass);
+                    bundle.putString("checkin", checkinStr);
+                    bundle.putString("checkout", checkoutStr);
+
+                }else{
+                    bundle.putString("pass", "1;"+autoCompleteTextView.getText().toString()+";null");
+                }
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 FragmentHomeListItem fragment = new FragmentHomeListItem();
                 fragment.setArguments(bundle);
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home, fragment)
+                activity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_home, fragment).hide(FragmentHomeMain.this)
                         .addToBackStack(null).commit();
+
 
             }
         });
