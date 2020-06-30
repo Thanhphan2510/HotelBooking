@@ -159,17 +159,10 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
 
-            updateUI();
         }
     }
 
-    private void updateUI() {
-        Toast.makeText(StartLoginActivity.this, "You are login", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(StartLoginActivity.this, ActivityAccountFacebook.class);
-        startActivity(intent);
-        finish();
-    }
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d("TAG", "handleFacebookAccessToken:" + token);
 
@@ -183,13 +176,13 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(StartLoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI();
+
                         }
                     }
                 });

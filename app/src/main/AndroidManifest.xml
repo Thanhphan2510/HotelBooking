@@ -24,10 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ActivityAccountFacebook"></activity>
+
         <activity android:name=".Activity.MapActivity" />
-        <activity android:name=".Activity.CreateAccountHB" />
-        <activity android:name=".Activity.LoginAccountHB" />
         <activity android:name=".Activity.StartLoginActivity" />
         <activity android:name=".Activity.BookingReviewActivity" />
         <activity android:name=".Activity.FillInfoActivity" />
