@@ -84,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
         viewPagerAdapter.addFragment(fragmentMenu);  //index 0
         viewPagerAdapter.addFragment(fragmentHome);
-         viewPagerAdapter.addFragment(fragmentProfile);
+        viewPagerAdapter.addFragment(fragmentProfile);
 
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setCurrentItem(1);

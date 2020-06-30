@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.example.hotelbooking.Adapter.RoomBookingReviewAdapter;
@@ -26,6 +28,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,6 +58,8 @@ public class BookingReviewActivity extends AppCompatActivity {
     List<BookingReviewRoom> rooms;
     ArrayList<Room> selectedRooms;
     BookingInfo bookingInfo;
+    FirebaseUser user;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +78,14 @@ public class BookingReviewActivity extends AppCompatActivity {
         bookingInfo = (BookingInfo) intent.getSerializableExtra("BookingInfo");
         selectedRooms = new ArrayList<>();
         selectedRooms.addAll(bookingInfo.getRooms());
+
         checkin_tv.setText(bookingInfo.getCheckin());
         checkout_tv.setText(bookingInfo.getCheckout());
+
+
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
 
         rooms = new ArrayList<>();
         int price = 0;
@@ -83,8 +100,12 @@ public class BookingReviewActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         night_tv.setText(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+" nights");
         price_tv.setText("VND "+price*TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+
+
+
 
         adapter = new RoomBookingReviewAdapter(getApplicationContext(), rooms);
         roomListView.setAdapter(adapter);
@@ -124,7 +145,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    final String clientID = "thanhphan";
+                    final String clientID = user.getDisplayName();
                     docData.put("hotelID", bookingInfo.getHotelID());
                     docData.put("roomID", room.getRoomID());
                     docData.put("clientID", clientID);
@@ -137,7 +158,7 @@ public class BookingReviewActivity extends AppCompatActivity {
 
 
                     //add booking room to database
-                    final String bookID = new Random().nextInt() + "";
+                    final String bookID = Math.abs(new Random().nextInt()) + "";
 
                     Task<Void> documentReference = database.collection("book").document(bookID).set(docData)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
