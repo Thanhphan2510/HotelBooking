@@ -23,7 +23,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.ActivityAccount" />
-        <activity android:name=".Activity.MapActivity" />
         <activity android:name=".Activity.CreateAccountHB" />
         <activity android:name=".Activity.LoginAccountHB" />
         <activity android:name=".Activity.StartLoginActivity" />
@@ -47,6 +46,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Activity.MapActivity">
+
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChKqzcXhIDF-8hGV5FfJQ4FK7U_YTRfag" />

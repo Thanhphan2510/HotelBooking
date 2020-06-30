@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +51,8 @@ public class BookingReviewActivity extends AppCompatActivity {
     List<BookingReviewRoom> rooms;
     ArrayList<Room> selectedRooms;
     BookingInfo bookingInfo;
+    FirebaseUser user;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,8 @@ public class BookingReviewActivity extends AppCompatActivity {
         selectedRooms = new ArrayList<>();
         selectedRooms.addAll(bookingInfo.getRooms());
 
-
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         rooms = new ArrayList<>();
         for (Room room : selectedRooms) {
             rooms.add(new BookingReviewRoom(room.getName(), room.getPrice()));
@@ -113,7 +118,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    final String clientID = "thanh phan";
+                    final String clientID = user.getProviderId();
                     docData.put("hotelID", bookingInfo.getHotelID());
                     docData.put("roomID", room.getRoomID());
                     docData.put("clientID", clientID);
