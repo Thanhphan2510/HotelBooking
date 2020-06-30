@@ -115,8 +115,8 @@ public class BookingReviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 for (final Room room : selectedRooms) {
-                    rooms.add(new BookingReviewRoom(room.getName(), room.getPrice()));
-                    adapter.notifyDataSetChanged();
+//                    rooms.add(new BookingReviewRoom(room.getName(), room.getPrice()));
+//                    adapter.notifyDataSetChanged();
                     final Map<String, Object> docData = new HashMap<>();
                     try {
                         docData.put("checkin", new Timestamp(MyUntil.covertStringtoDate(bookingInfo.getCheckin())));
