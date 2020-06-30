@@ -63,6 +63,7 @@ public class FragmentProfile extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         AppCompatActivity activity = (AppCompatActivity) view.getContext();
+
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_profile, FragmentSignIn.newInstance()).commit();
         return view;

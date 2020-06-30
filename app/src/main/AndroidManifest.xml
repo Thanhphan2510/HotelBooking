@@ -30,7 +30,9 @@
         <activity android:name=".Activity.FillInfoActivity" />
         <activity android:name=".Activity.ChooseRoomActivity" />
         <activity android:name=".Activity.DetailItemActivity" />
-        <activity android:name=".Activity.HomeActivity" />
+        <activity android:name=".Activity.HomeActivity">
+
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -43,7 +45,8 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>>
+
         </activity>
 
         <activity android:name=".Activity.MapActivity">

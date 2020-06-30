@@ -22,12 +22,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-
             }
 
             @Override
             public void onFinish() {
-                Intent intent = new Intent(getApplicationContext(), StartLoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
