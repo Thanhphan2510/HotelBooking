@@ -35,8 +35,6 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     viewPager.setCurrentItem(1);
                     return true;
-
-
                 case R.id.navigation_profile:
                     viewPager.setCurrentItem(2);
                     return true;
@@ -46,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

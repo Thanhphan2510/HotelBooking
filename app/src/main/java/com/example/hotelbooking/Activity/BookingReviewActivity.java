@@ -135,6 +135,15 @@ public class BookingReviewActivity extends AppCompatActivity {
         bookingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(selectedRooms.size()<1){
+                    Toast.makeText(BookingReviewActivity.this, "choose room!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(checkin_tv.getText().toString().equals("NULL")||checkout_tv.getText().toString().equals("NULL")){
+                    Toast.makeText(BookingReviewActivity.this, "choose checkin, checkout!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 for (final Room room : selectedRooms) {
 //                    rooms.add(new BookingReviewRoom(room.getName(), room.getPrice()));
 //                    adapter.notifyDataSetChanged();
