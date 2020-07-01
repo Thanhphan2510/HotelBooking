@@ -27,7 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Activity.ActivityAccount" />
         <activity android:name=".Activity.CreateAccountHB" />
         <activity android:name=".Activity.LoginAccountHB" />
 

@@ -23,8 +23,6 @@ import java.util.ArrayList;
  */
 public class FragmentHome extends Fragment {
 
-
-
     public FragmentHome() {
         // Required empty public constructor
     }
