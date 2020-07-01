@@ -8,11 +8,7 @@
   "client": [
     {
       "client_info": {
-<<<<<<< HEAD
         "mobilesdk_app_id": "1:847758651184:android:8286970354a2d4a0f562f5",
-=======
-        "mobilesdk_app_id": "1:847758651184:android:b6fc9d903f9ad29cf562f5",
->>>>>>> master
         "android_client_info": {
           "package_name": "com.example.hotelbookingnew"
         }

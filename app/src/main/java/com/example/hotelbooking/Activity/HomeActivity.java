@@ -4,15 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.hotelbooking.Adapter.ViewPagerAdapter;
+import com.example.hotelbooking.Fragment.FragmentAccount;
 import com.example.hotelbooking.Fragment.FragmentHome;
 import com.example.hotelbooking.Fragment.FragmentMenu;
 import com.example.hotelbooking.Fragment.FragmentProfile;
 import com.example.hotelbooking.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
     ViewPager viewPager;
@@ -46,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +70,19 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                navigation.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = navigation.getMenu().getItem(position);
+                if (position == 2) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null)
+                        navigation.getMenu().getItem(position).setChecked(true);
+                    else {
+//                        Toast.makeText(this,"user nullaaaa",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(HomeActivity.this, StartLoginActivity.class));
+                    }
+                } else {
+                    navigation.getMenu().getItem(position).setChecked(true);
+                    prevMenuItem = navigation.getMenu().getItem(position);
+                }
+
             }
 
             @Override
