@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 
 import com.example.hotelbooking.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -29,15 +27,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if ((user == null)){
-                    startActivity(new Intent(WelcomeActivity.this, StartLoginActivity.class));
-                }
-                else{
-                    Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                }
-
+                Intent intent = new Intent(getApplicationContext(), StartLoginActivity.class);
+                startActivity(intent);
                 finish();
             }
         }.start();
