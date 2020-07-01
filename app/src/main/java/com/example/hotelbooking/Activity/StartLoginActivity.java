@@ -109,6 +109,7 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         loginGoogle = findViewById(R.id.login_google_btn);
         loginFacebook = findViewById(R.id.login_facebook_btn);
         loginHotelBooking = findViewById(R.id.login_hotelbooking_btn);
+//        loginFacebook.setFragment(this);
         createAccountHB = findViewById(R.id.create_account_btn);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
