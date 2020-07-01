@@ -31,10 +31,10 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onFinish() {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if ((user == null)){
-                    startActivity(new Intent(WelcomeActivity.this, StartLoginActivity.class));
+                    startActivity(new Intent(WelcomeActivity.this, StartLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
                 }
                 else{
-                    Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 }
 

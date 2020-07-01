@@ -74,6 +74,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     private static final int RC_SIGN_IN = 1;
     BlurImageView blurImageView;
     boolean clicked;
+    FirebaseUser user;
+
 
     //    private final int
 
@@ -83,9 +85,9 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_login);
 
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
-        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
-        AppEventsLogger.activateApp(this);
+//        FacebookSdk.sdkInitialize(this.getApplicationContext());
+//        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
+//        AppEventsLogger.activateApp(this);
 
         exit = (Button) findViewById(R.id.exit_btn);
         blurImageView = (BlurImageView) findViewById(R.id.BlurImageView);
@@ -105,7 +107,12 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         } catch (NoSuchAlgorithmException e) {
         }
         mAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
+            }
+        };
         loginGoogle = findViewById(R.id.login_google_btn);
         loginFacebook = findViewById(R.id.login_facebook_btn);
         loginHotelBooking = findViewById(R.id.login_hotelbooking_btn);
@@ -122,6 +129,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         loginFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
         callbackManager = CallbackManager.Factory.create();
@@ -185,10 +194,15 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     @Override
     protected void onStart() {
         super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser!=null){
+            updateUI();
+        }
+
     }
 
     private void updateUI() {
-        Intent intent = new Intent(StartLoginActivity.this, HomeActivity.class);
+        Intent intent = new Intent(StartLoginActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }
@@ -196,15 +210,20 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     private void handleFacebookAccessToken(AccessToken token) {
         Log.e("thanhphan", "handleFacebookAccessToken:" + token.getToken());
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(StartLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.e("thanhphan", "onSuccess: " + "LOL");
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.e("thanhphan", "onSuccess: " + "Login fb : đẩy lên fairebase");
 
+                            updateUI();
+                            FirebaseUser user = mAuth.getCurrentUser();
+//                            updateUI(user);
+                            Log.e("thanhphan", "onSuccess: " + user.getDisplayName());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("thanhphan", "onSuccess: " + "Login fb :  not đẩy lên fairebase");
@@ -217,8 +236,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -234,6 +253,15 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
 //                updateUI(null);
                 // [END_EXCLUDE]
             }
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+            if (user != null) {
+                // User is signed in
+                updateUI();
+            } else {
+                // No user is signed in
+            }
+
         }
     }
 
@@ -251,7 +279,7 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
 
                         } else {
                             Toast.makeText(StartLoginActivity.this, "Authentication successfull", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
+//                            FirebaseUser user = mAuth.getCurrentUser();
                             updateUI();
 //                            getProfileGoogle(user);
                         }
