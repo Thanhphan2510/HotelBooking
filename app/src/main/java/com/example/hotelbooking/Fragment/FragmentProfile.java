@@ -1,16 +1,23 @@
 package com.example.hotelbooking.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.hotelbooking.Activity.HomeActivity;
+import com.example.hotelbooking.Activity.StartLoginActivity;
 import com.example.hotelbooking.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +56,8 @@ public class FragmentProfile extends Fragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +73,15 @@ public class FragmentProfile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         AppCompatActivity activity = (AppCompatActivity) view.getContext();
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_profile, FragmentSignIn.newInstance()).commit();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null)
+            transaction.replace(R.id.fragment_profile, new FragmentAccount()).commit();
+        else{
+            Toast.makeText(getContext(),"user nullaaaa",Toast.LENGTH_LONG).show();
+//            startActivity(new Intent(getContext(), StartLoginActivity.class));
+        }
+
+
         return view;
     }
 }
