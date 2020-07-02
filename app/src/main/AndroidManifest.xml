@@ -20,7 +20,8 @@
         <activity android:name=".Activity.FillInfoActivity" />
         <activity android:name=".Activity.ChooseRoomActivity" />
         <activity android:name=".Activity.DetailItemActivity" />
-        <activity android:name=".Activity.HomeActivity" />
+        <activity android:name=".Activity.HomeActivity"
+            android:noHistory="true"/>
         <activity
             android:name=".Activity.WelcomeActivity"
             android:exported="true">

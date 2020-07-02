@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
                         navigation.getMenu().getItem(position).setChecked(true);
                     else {
 //                        Toast.makeText(this,"user nullaaaa",Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(HomeActivity.this, StartLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                        startActivity(new Intent(HomeActivity.this, StartLoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     }
                 } else {
                     navigation.getMenu().getItem(position).setChecked(true);

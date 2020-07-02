@@ -131,6 +131,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
                 }
             }
         };
+
+
         loginGoogle = findViewById(R.id.login_google_btn);
         loginFacebook = findViewById(R.id.login_facebook_btn);
         loginHotelBooking = findViewById(R.id.login_hotelbooking_btn);
@@ -195,14 +197,14 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         loginHotelBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginAccountHB.class);
+                Intent intent = new Intent(getApplicationContext(), LoginAccountHB.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
         createAccountHB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CreateAccountHB.class);
+                Intent intent = new Intent(getApplicationContext(), CreateAccountHB.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
@@ -225,7 +227,7 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     private void updateUI() {
-        Intent intent = new Intent(StartLoginActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent intent = new Intent(StartLoginActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
@@ -233,25 +235,47 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     private void handleFacebookAccessToken(AccessToken token) {
         Log.e("thanhphan", "handleFacebookAccessToken:" + token.getToken());
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-
+//        mAuth.getCurrentUser().linkWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.e("thanhphan", "linkWithCredential:success");
+//                        } else {
+//                            Log.e("thanphan", "linkWithCredential:failure", task.getException());
+//                        }
+//                    }
+//                });
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        Log.e("thanhphan", "onSuccess: " + "LOL");
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+////                            updateUI();
+//                            Log.e("thanhphan", "onSuccess: " + "signInWithCredential FB");
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.e("thanhphan", "onSuccess: " + "Login fb :  not đẩy lên fairebase");
+//                        }
+//                        Log.e("thanhphan", "LOL");
+//                    }
+//
+//                });
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.e("thanhphan", "onSuccess: " + "LOL");
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            updateUI();
-//                            Log.e("thanhphan", "onSuccess: " + user.getDisplayName());
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.e("thanhphan", "onSuccess: " + "Login fb :  not đẩy lên fairebase");
-                        }
-                        Log.e("thanhphan", "LOL");
+                        FirebaseUser currentUser = task.getResult().getUser();
+                        // Merge prevUser and currentUser accounts and data
+                        // ...
+                        Log.e("thanhphan", "onComplete: merge accout" );
                     }
-
                 });
+
+
     }
 
     @Override
@@ -278,6 +302,7 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
 
     private void handleGoogleAccessToken(String account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account, null);
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
