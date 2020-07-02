@@ -18,6 +18,22 @@ public class BookHistory {
         this.roomID = roomID;
     }
 
+    @Override
+    public String toString() {
+        return "BookHistory{" +
+                "checkin='" + checkin + '\'' +
+                ", checkout='" + checkout + '\'' +
+                ", clientID='" + clientID + '\'' +
+                ", country='" + country + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", hotelID='" + hotelID + '\'' +
+                ", roomID='" + roomID + '\'' +
+                '}';
+    }
+
     public String getCheckin() {
         return checkin;
     }

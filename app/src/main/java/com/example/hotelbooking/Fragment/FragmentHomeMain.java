@@ -15,8 +15,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.hotelbooking.R;
+import com.example.hotelbooking.Utils.MyUntil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +41,7 @@ public class FragmentHomeMain extends Fragment {
     private int mYear, mMonth, mDay;
     private AutoCompleteTextView autoCompleteTextView;
     private ListView image_show;
-    String checkinStr, checkoutStr;
+    String checkinStr ="", checkoutStr="";
 
     public FragmentHomeMain() {
         // Required empty public constructor
@@ -96,14 +99,47 @@ public class FragmentHomeMain extends Fragment {
             public void onClick(View view) {
                 Bundle bundle=new Bundle();
 
+
+
                 if(autoCompleteTextView.getText().toString().equals("")){
-                    String pass ="2;"+checkinStr+";"+checkoutStr;
-                    bundle.putString("pass",pass);
-                    bundle.putString("checkin", checkinStr);
-                    bundle.putString("checkout", checkoutStr);
+                    if(checkoutStr.equals("")||checkinStr.equals("")){
+                        Toast.makeText(getContext(),"Enter checkin, checkout", Toast.LENGTH_LONG).show();
+                        return;
+                    }else {
+                        try {
+                            if(MyUntil.covertStringtoDate(checkinStr).before(MyUntil.covertStringtoDate(checkoutStr))){
+                                String pass ="2;"+checkinStr+";"+checkoutStr;
+                                bundle.putString("pass",pass);
+                                bundle.putString("checkin", checkinStr);
+                                bundle.putString("checkout", checkoutStr);
+                            }else{
+                                Toast.makeText(getContext(),"Enter checkin < checkout", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
 
                 }else{
-                    bundle.putString("pass", "1;"+autoCompleteTextView.getText().toString()+";null");
+                    int check = 0;
+                    for(String name: hotelNames){
+                        if(!autoCompleteTextView.getText().toString().equals(name)){
+                          check --;
+                        }else{
+                            check = hotelNames.size();
+                        }
+
+                    }
+                    if(check >=0){
+                        bundle.putString("pass", "1;"+autoCompleteTextView.getText().toString()+";null");
+                    }else{
+                        Toast.makeText(getContext(),"Enter hotel name again", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                 }
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 FragmentHomeListItem fragment = new FragmentHomeListItem();

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.hotelbooking.Activity.BookingHistory;
+import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Activity.HomeActivity;
 import com.example.hotelbooking.Activity.StartLoginActivity;
 import com.example.hotelbooking.R;
@@ -132,24 +135,7 @@ public class FragmentAccount extends Fragment {
         }
 
         if (mAuth.getCurrentUser() != null) {
-//            switch (mAuth.getCurrentUser().getProviderId()) {
-//                case "google.com":
-//                    getProfileGoogle(mAuth.getCurrentUser());
-//                    Log.e("thanhphan", "GoogleAuthProviderID: ");
-//                    break;
-//                case "facebook.com":
-////                    getProfileGoogle(mAuth.getCurrentUser());
-//                    Log.e("thanhphan", "FacebookAuthProviderID: ");
-//                    break;
-//                case "password":
-//                    Log.e("thanhphan", "EmailAuthProviderID: ");
-//                    break;
-//                default:
-//                    Log.e("thanhphan", "default: "+mAuth.getCurrentUser().getProviderData().get(1).getProviderId());
-//                    break;
-//            }
-
-            for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+            for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
                 if (user.getProviderId().equals("password")) {
                     Log.e("thanhphan", "User is signed in with email/password ");
                     getUserProfileEmail(mAuth.getCurrentUser());
@@ -183,10 +169,28 @@ public class FragmentAccount extends Fragment {
             }
         });
 
+        btnBookingHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), BookingHistory.class);
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+            }
+        });
 
-        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_menu, FragmentMenuMain.newInstance()).commit();
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -244,4 +248,5 @@ public class FragmentAccount extends Fragment {
         request.executeAsync();
 
     }
+
 }
