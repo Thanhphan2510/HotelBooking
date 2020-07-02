@@ -4,130 +4,436 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.FragmentHomeMain">
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@android:color/white">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/title_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="10dp"
-                android:text="Hotel Booking"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
-                android:textStyle="bold">
-
-            </TextView>
-        </androidx.appcompat.widget.Toolbar>
+        android:layout_marginBottom="70dp">
 
         <LinearLayout
-
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="30dp"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
-            >
+            android:orientation="vertical">
+
+            <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal">
+
+                 <androidx.appcompat.widget.Toolbar
+                     android:id="@+id/toolbar"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:background="@color/colorAccent"
+                     tools:ignore="MissingConstraints">
+
+                     <TextView
+                         android:id="@+id/title_profile"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="55dp"
+                         android:layout_marginRight="10dp"
+                         android:text="Hotel Booking"
+                         android:textColor="@android:color/white"
+                         android:textSize="20dp"
+                         android:textStyle="bold">
+
+                     </TextView>
+                 </androidx.appcompat.widget.Toolbar>
+             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:background="@null">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/search_icon2x"
-                    android:layout_marginLeft="15dp"
-                    android:layout_gravity="center"
-                    >
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/txtUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textSize="22dp">
 
-                </ImageView>
-                <AutoCompleteTextView
-                    android:id="@+id/search_autocomplete"
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Search hotel/Time"
+                    android:textColor="@android:color/black">
+
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="40dp"
-                    android:background="@null"
-                    android:hint="   SEARCH"
-                    android:textColor="#ffbdbdc3"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                    android:textSize="13sp" >
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/search_icon2x">
 
-                </AutoCompleteTextView>
+                    </ImageView>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/search_autocomplete"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="40dp"
+                        android:background="@drawable/vien_nut"
+                        android:hint="   SEARCH"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp">
+
+                    </AutoCompleteTextView>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/checkin_button"
+                        android:layout_width="77dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/vien_nut"
+
+                        android:hint="Check-in"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/checkout_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/vien_nut"
+                        android:hint="Check-out"
+                        android:textColor="@android:color/black"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/search_btn"
+                    android:layout_width="154dp"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/colorAccent"
+                    android:text="Search"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp" />
 
             </LinearLayout>
-
 
             <LinearLayout
-                android:id="@+id/search"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/checkin_button"
-                    android:layout_width="77dp"
-                    android:layout_height="36dp"
-                    android:background="@android:color/white"
-                    android:hint="Check-in"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp"/>
-
-                <Button
-                    android:id="@+id/checkout_button"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@android:color/white"
-                    android:hint="Check-out"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
                     android:textColor="@android:color/black"
-                    android:textSize="13sp"/>
+                    android:textSize="13dp"
+                    android:text="Hotels have good quality.">
 
+                </TextView>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/asia_hotel_hue"
+
+                                android:layout_marginLeft="10dp">
+
+                            </ImageView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Asia Hotel Hue"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/atlas_hotel_hoi_an"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="Atlas Hotel Hoi An"
+                            android:textColor="@android:color/black">
+
+                        </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/de_la_coupole"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="De la Coupole"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/hanoi_sky"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Hanoi Sky"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/thanhthanh"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Thanh Thanh Hotel"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="13dp"
+                    android:text="Summer fun.">
+
+                </TextView>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/vinh_ha_long"
+
+                                android:layout_marginLeft="10dp">
+
+                            </ImageView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Ha Long Bay"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/phu_quoc"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Phu Quoc Island"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/hoi_an"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Hoi An"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/mui_ne"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Mui Ne Island"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="300dp"
+                                android:layout_height="170dp"
+                                android:src="@drawable/con_dao"
+                                android:layout_marginLeft="10dp">
+                            </ImageView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="Con Dao Island"
+                                android:textColor="@android:color/black">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/search_btn"
-                android:layout_width="154dp"
-                android:layout_height="37dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:background="@color/colorAccent"
-                android:text="Search"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                android:textSize="13sp" />
-
         </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent"
-            android:layout_gravity="center">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logo">
-
-            </ImageView>
-
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>
