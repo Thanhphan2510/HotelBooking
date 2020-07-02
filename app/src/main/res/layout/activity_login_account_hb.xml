@@ -88,7 +88,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/sign_in_textview"
+                    android:id="@+id/signup_button_login_account_HB"
                     android:layout_width="wrap_content"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
@@ -108,16 +108,6 @@
                 android:text="FORGOT PASSWORD ?"
                 android:textColor="#ff77777d"
                 android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/skipview"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:text="SKIP"
-                android:textColor="#ff9f9fa5"
-                android:textSize="14sp" />
 
         </LinearLayout>
 

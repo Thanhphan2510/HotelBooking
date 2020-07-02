@@ -85,15 +85,6 @@
                 android:textColor="#ffd3bd84"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/skipview"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:text="SKIP"
-                android:textColor="#ff9f9fa5"
-                android:textSize="14sp" />
 
         </LinearLayout>
 

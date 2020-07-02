@@ -3,6 +3,7 @@ package com.example.hotelbooking.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,9 @@ public class CreateAccountHB extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Successfully Registered", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CreateAccountHB.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Fail Registered", Toast.LENGTH_LONG).show();

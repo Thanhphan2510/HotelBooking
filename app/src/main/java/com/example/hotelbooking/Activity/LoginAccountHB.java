@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginAccountHB extends AppCompatActivity {
     private EditText username, pass;
-    private Button signInBtn;
+    private Button signInBtn, signUpBtn;
     private TextView forgotPassTv;
     FirebaseAuth firebaseAuth;
 
@@ -32,6 +32,7 @@ public class LoginAccountHB extends AppCompatActivity {
         username = findViewById(R.id.username_login_account_HB);
         pass = findViewById(R.id.password_login_account_HB);
         signInBtn = findViewById(R.id.signin_button_login_account_HB);
+        signUpBtn = findViewById(R.id.signin_button_login_account_HB);
         forgotPassTv = findViewById(R.id.forgotpass_textview_login_account_HB);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -49,6 +50,9 @@ public class LoginAccountHB extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Successfully Logged In", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(LoginAccountHB.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
 
                             Toast.makeText(getApplicationContext(), "Fail Logged In", Toast.LENGTH_LONG).show();
@@ -78,5 +82,14 @@ public class LoginAccountHB extends AppCompatActivity {
                 });
             }
         });
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginAccountHB.this, CreateAccountHB.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 }

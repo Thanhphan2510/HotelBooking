@@ -30,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -108,15 +109,13 @@ public class FragmentAccount extends Fragment {
         btnLogout = (Button) view.findViewById(R.id.btnLogout);
 
 
-
         mAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
+                if (firebaseAuth.getCurrentUser() != null) {
 //                    getProfileGoogle(mAuth.getCurrentUser());
-                }
-                else {
+                } else {
                 }
             }
         };
@@ -125,15 +124,44 @@ public class FragmentAccount extends Fragment {
 //        acct = GoogleSignIn.getLastSignedInAccount(this);
         //login with facebook
         final boolean logout = AccessToken.getCurrentAccessToken() == null;
-        if(!logout){
+        if (!logout) {
             Picasso.with(getContext()).load(Profile.getCurrentProfile().
-                    getProfilePictureUri(200,200)).into(avatar);
+                    getProfilePictureUri(200, 200)).into(avatar);
             Log.d("TAG", "Username:" + Profile.getCurrentProfile().getName());
-            getUserProfileFacebook(AccessToken.getCurrentAccessToken());
+
         }
 
-        if(mAuth.getCurrentUser() != null){
-            getProfileGoogle(mAuth.getCurrentUser());
+        if (mAuth.getCurrentUser() != null) {
+//            switch (mAuth.getCurrentUser().getProviderId()) {
+//                case "google.com":
+//                    getProfileGoogle(mAuth.getCurrentUser());
+//                    Log.e("thanhphan", "GoogleAuthProviderID: ");
+//                    break;
+//                case "facebook.com":
+////                    getProfileGoogle(mAuth.getCurrentUser());
+//                    Log.e("thanhphan", "FacebookAuthProviderID: ");
+//                    break;
+//                case "password":
+//                    Log.e("thanhphan", "EmailAuthProviderID: ");
+//                    break;
+//                default:
+//                    Log.e("thanhphan", "default: "+mAuth.getCurrentUser().getProviderData().get(1).getProviderId());
+//                    break;
+//            }
+
+            for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+                if (user.getProviderId().equals("password")) {
+                    Log.e("thanhphan", "User is signed in with email/password ");
+                }
+                if (user.getProviderId().equals("facebook.com")) {
+                    Log.e("thanhphan", "User is signed in with fb ");
+                    getUserProfileFacebook(AccessToken.getCurrentAccessToken());
+                }
+                if (user.getProviderId().equals("google.com")) {
+                    Log.e("thanhphan", "User is signed in with gg");
+                    getProfileGoogle(mAuth.getCurrentUser());
+                }
+            }
         }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -160,15 +188,16 @@ public class FragmentAccount extends Fragment {
         transaction.replace(R.id.fragment_menu, FragmentMenuMain.newInstance()).commit();
         return view;
     }
+
     private void updateUI() {
         Toast.makeText(getContext(), "You are logout", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(getActivity(),StartLoginActivity.class));
+        startActivity(new Intent(getActivity(), StartLoginActivity.class));
     }
 
 
-    private void getProfileGoogle(FirebaseUser firebaseUser){
+    private void getProfileGoogle(FirebaseUser firebaseUser) {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
-        if(acct!=null){
+        if (acct != null) {
             String user_name = acct.getDisplayName();
             String user_email = acct.getEmail();
             Uri user_photo = acct.getPhotoUrl();
@@ -178,6 +207,7 @@ public class FragmentAccount extends Fragment {
         }
 
     }
+
     private void getUserProfileFacebook(AccessToken currentAccessToken) {
 
         GraphRequest request = GraphRequest.newMeRequest(

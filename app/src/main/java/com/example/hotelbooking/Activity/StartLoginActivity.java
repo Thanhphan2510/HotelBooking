@@ -271,7 +271,7 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
                         FirebaseUser currentUser = task.getResult().getUser();
                         // Merge prevUser and currentUser accounts and data
                         // ...
-                        Log.e("thanhphan", "onComplete: merge accout" );
+                        Log.e("thanhphan", "onComplete: fb accout" );
                     }
                 });
 
