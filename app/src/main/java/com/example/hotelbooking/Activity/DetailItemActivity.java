@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.hotelbooking.Fragment.FragmentHomeListItem;
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,10 +41,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class DetailItemActivity extends AppCompatActivity implements OnMapReadyCallback  {
-//    private static final String[] INITIAL_PERMS={
+public class DetailItemActivity extends AppCompatActivity implements OnMapReadyCallback {
+    //    private static final String[] INITIAL_PERMS={
 //            Manifest.permission.ACCESS_FINE_LOCATION,
 //            Manifest.permission.READ_CONTACTS
 //    };
@@ -58,7 +61,8 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
     private TextView hotelName;
     private RatingBar hotelRating;
     private GoogleMap mMap;
-    private Button selectRoomBtn, checkinBtn, checkoutBtn;
+    private Button selectRoomBtn, checkinBtn, checkoutBtn, btnBack;
+    private ImageView image1, image2, image3, image4, image5;
     HomeItem item;
     private int mYear, mMonth, mDay;
 
@@ -66,21 +70,49 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_item);
-        hotelImmage = findViewById(R.id.image_item);
         hotelName = findViewById(R.id.name_item);
         hotelRating = findViewById(R.id.rating_item);
         selectRoomBtn = findViewById(R.id.btn_selectroom);
         checkinBtn = findViewById(R.id.btn_checkin_detailitem);
         checkoutBtn = findViewById(R.id.btn_checkout_detailitem);
+        btnBack = findViewById(R.id.btnBack);
+        image1 = findViewById(R.id.image_item1);
+        image2 = findViewById(R.id.image_item2);
+        image3 = findViewById(R.id.image_item3);
+        image4 = findViewById(R.id.image_item4);
+        image5 = findViewById(R.id.image_item5);
 
         Intent intent = getIntent();
         item = (HomeItem) intent.getSerializableExtra("InfoClickedItem");
+        String hotelID = item.getId();
 
-        Log.e("thanhphan", "item:"+item.toString() );
+        Log.e("thanhphan", "item:" + hotelID.toString());
 
-        Picasso.with(this.getApplicationContext()).load(item.getImageView()).into(hotelImmage);
+//        Picasso.with(this.getApplicationContext()).load(item.getImageView()).fit().centerCrop().into(hotelImmage);
 
 
+
+        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+        final DocumentReference documentReference = database.collection("hotels")
+                .document(hotelID);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+
+                    List<String> gallery = (List<String>) documentSnapshot.get("gallery");
+                    Log.e("thanhphan", "onComplete: "+gallery.toString() );
+
+                        Picasso.with(getApplicationContext()).load(gallery.get(0)).fit().centerCrop().into(image1);
+                        Picasso.with(getApplicationContext()).load(gallery.get(1)).fit().centerCrop().into(image2);
+                        Picasso.with(getApplicationContext()).load(gallery.get(2)).fit().centerCrop().into(image3);
+                        Picasso.with(getApplicationContext()).load(gallery.get(3)).fit().centerCrop().into(image4);
+                        Picasso.with(getApplicationContext()).load(gallery.get(4)).fit().centerCrop().into(image5);
+
+                }
+            }
+        });
 
         hotelName.setText(item.getName());
         hotelRating.setRating(item.getRating());
@@ -106,7 +138,12 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
                 dd.show();
             }
         });
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         checkoutBtn.setText(checkout_str);
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,14 +216,14 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
 
     private void getHotelLocation() {
         String id = item.getId();
-        Log.e("ID Item", "getHotelLocation: "+id );
+        Log.e("ID Item", "getHotelLocation: " + id);
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
 
-        DocumentReference reference= database.collection("hotels").document(id);
+        DocumentReference reference = database.collection("hotels").document(id);
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     String str = String.valueOf(doc.get("latlng"));
                     String name_str = String.valueOf(doc.get("name"));
@@ -203,6 +240,7 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
         });
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {

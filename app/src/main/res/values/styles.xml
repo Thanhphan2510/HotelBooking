@@ -12,6 +12,7 @@
 
     <style name="ImageRatingBar" parent="Base.Widget.AppCompat.RatingBar">
     <item name="android:progressDrawable">@drawable/ratingbar_selector</item>
+        <item name="android:color">@android:color/holo_orange_light</item>
     <item name="android:minHeight">20dp</item>
     <item name="android:maxHeight">50dp</item>
     </style>

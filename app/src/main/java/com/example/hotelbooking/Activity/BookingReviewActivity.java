@@ -52,7 +52,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BookingReviewActivity extends AppCompatActivity {
     private ListView roomListView;
-    private Button bookingBtn;
+    private Button bookingBtn, btnBack;
     private TextView checkin_tv, checkout_tv, night_tv,price_tv;
     RoomBookingReviewAdapter adapter;
     List<BookingReviewRoom> rooms;
@@ -71,6 +71,7 @@ public class BookingReviewActivity extends AppCompatActivity {
         checkout_tv = findViewById(R.id.checkout_tv);
         price_tv = findViewById(R.id.price_tv);
         night_tv = findViewById(R.id.night_tv);
+        btnBack = findViewById(R.id.btnBack);
 
 
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -111,7 +112,12 @@ public class BookingReviewActivity extends AppCompatActivity {
         roomListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         roomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

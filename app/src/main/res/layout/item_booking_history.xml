@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/image_booking_history"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginRight="20dp"
+            >
+
+        </ImageView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/hotel_booking_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="vonga"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                >
+
+            </TextView>
+            <TextView
+                android:id="@+id/room_booking_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/black"
+                >
+
+            </TextView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/checkin_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="name"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    >
+
+                </TextView>
+                <TextView
+                    android:id="@+id/checkout_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="name"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black"
+                    >
+
+                </TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

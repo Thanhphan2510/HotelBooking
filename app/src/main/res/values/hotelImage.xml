@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="hotel1" type="string"></item>
+    <item name="hotel2" type="string"></item>
+    <item name="hotel3" type="string"></item>
+    <item name="hotel4" type="string"></item>
+    <item name="hotel5" type="string"></item>
+    <item name="hotel6" type="string"></item>
+    <item name="hotel7" type="string"></item>
+    <item name="hotel8" type="string"></item>
+    <item name="hotel9" type="string"></item>
+    <item name="hotel10" type="string"></item>
+</resources>

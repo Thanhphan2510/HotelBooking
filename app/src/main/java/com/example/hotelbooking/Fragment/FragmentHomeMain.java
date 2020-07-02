@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 
 import com.example.hotelbooking.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,7 @@ public class FragmentHomeMain extends Fragment {
     private Button searchBtn, checkinBtn, checkoutBtn;
     private int mYear, mMonth, mDay;
     private AutoCompleteTextView autoCompleteTextView;
-
+    private ListView image_show;
     String checkinStr, checkoutStr;
 
     public FragmentHomeMain() {
@@ -147,6 +148,7 @@ public class FragmentHomeMain extends Fragment {
                 dd.show();
             }
         });
+
         return view;
     }
 }

@@ -10,6 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activity.DetailBookingHistory"></activity>
+        <activity android:name=".Activity.BookingHistory" />
         <activity android:name=".Activity.CreateAccountHB" />
         <activity android:name=".Activity.LoginAccountHB" />
         <activity
@@ -20,8 +22,7 @@
         <activity android:name=".Activity.FillInfoActivity" />
         <activity android:name=".Activity.ChooseRoomActivity" />
         <activity android:name=".Activity.DetailItemActivity" />
-        <activity android:name=".Activity.HomeActivity"
-            android:noHistory="true"/>
+        <activity android:name=".Activity.HomeActivity" />
         <activity
             android:name=".Activity.WelcomeActivity"
             android:exported="true">
@@ -31,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MapActivity"></activity>
+        <activity android:name=".Activity.MapActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -43,16 +44,16 @@
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />
+
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

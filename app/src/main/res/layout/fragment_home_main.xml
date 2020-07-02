@@ -8,13 +8,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@null">
+        android:background="@android:color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/title_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="10dp"
+                android:text="Hotel Booking"
+                android:textColor="@android:color/white"
+                android:textSize="20dp"
+                android:textStyle="bold">
+
+            </TextView>
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="30dp"
+            android:background="@android:color/white"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -23,25 +46,33 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:background="@null">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/search_icon2x"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center"
+                    >
 
+                </ImageView>
                 <AutoCompleteTextView
                     android:id="@+id/search_autocomplete"
-                    android:layout_width="201dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="40dp"
                     android:background="@null"
                     android:hint="   SEARCH"
                     android:textColor="#ffbdbdc3"
-                    android:textSize="13sp" />
 
-                <ImageView
-                    android:layout_width="21dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/search_icon2x" />
+                    android:textSize="13sp" >
+
+                </AutoCompleteTextView>
+
             </LinearLayout>
 
 
             <LinearLayout
+                android:id="@+id/search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -52,9 +83,9 @@
                     android:id="@+id/checkin_button"
                     android:layout_width="77dp"
                     android:layout_height="36dp"
-                    android:background="@null"
+                    android:background="@android:color/white"
                     android:hint="Check-in"
-                    android:textColor="#ffbdbdc3"
+                    android:textColor="@android:color/black"
                     android:textSize="13sp"/>
 
                 <Button
@@ -62,34 +93,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@null"
+                    android:background="@android:color/white"
                     android:hint="Check-out"
-                    android:textColor="#ffbdbdc3"
+                    android:textColor="@android:color/black"
                     android:textSize="13sp"/>
 
             </LinearLayout>
 
-
-
-<!--            <Spinner-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:entries="@array/spinner_search" />-->
             <Button
                 android:id="@+id/search_btn"
                 android:layout_width="154dp"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/shapebuttonsign"
+                android:background="@color/colorAccent"
                 android:text="Search"
-                android:textColor="#ffbdbdc3"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
                 android:textSize="13sp" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo">
 
+            </ImageView>
+
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

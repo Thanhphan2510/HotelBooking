@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 
 import com.example.hotelbooking.Activity.DetailItemActivity;
+import com.example.hotelbooking.Activity.HomeActivity;
 import com.example.hotelbooking.Activity.MapActivity;
 import com.example.hotelbooking.Adapter.ItemHomeAdapter;
 import com.example.hotelbooking.Item.HomeItem;
@@ -62,7 +63,7 @@ import io.opencensus.internal.Utils;
  */
 public class FragmentHomeListItem extends Fragment {
     private ListView listView;
-    private Button mapBtn, sortBtn;
+    private Button mapBtn, sortBtn, btnBack;
 
 
     ItemHomeAdapter itemHomeAdapter;
@@ -118,7 +119,7 @@ public class FragmentHomeListItem extends Fragment {
         listView = view.findViewById(R.id.items_home_listview);
         mapBtn = view.findViewById(R.id.title_map);
         sortBtn = view.findViewById(R.id.title_sort);
-
+        btnBack = view.findViewById(R.id.btnBack);
         final Dialog dialog = new Dialog(getContext());
 
         RadioButton radio_price, radio_star_05, radio_star_50;
@@ -194,6 +195,12 @@ public class FragmentHomeListItem extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MapActivity.class);
                 startActivity(intent);
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), HomeActivity.class));
             }
         });
         items = new ArrayList<>();

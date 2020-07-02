@@ -21,7 +21,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class FillInfoActivity extends AppCompatActivity {
-    private Button nextStepBtn;
+    private Button nextStepBtn, btnBack;
     private EditText fisrtName, lastName, email, country, phonenumber;
     BookingInfo bookingInfo;
 
@@ -37,6 +37,13 @@ public class FillInfoActivity extends AppCompatActivity {
 
 
         nextStepBtn = findViewById(R.id.btn_next_step);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         nextStepBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:text="Single Room"
             android:textSize="20dp"
-            android:textColor="#055DB5"
+
+            android:textColor="@color/colorAccent"
             android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,24 +32,28 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
-                android:text="Free Wifi"/>
+                android:text="Free Wifi"
+                android:textColor="@android:color/black"/>
             <TextView
                 android:id="@+id/facilites_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Free Wifi"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:textColor="@android:color/black"/>
             <TextView
                 android:id="@+id/facilites_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Free Wifi"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:textColor="@android:color/black"/>
 
         </LinearLayout>
         <TextView
             android:id="@+id/des_room"
             android:layout_width="wrap_content"
+            android:textColor="@android:color/black"
             android:layout_height="wrap_content"
             android:text="Only 1 room left on HotelBooking. \nThis is description"
             />
@@ -87,6 +92,10 @@
         android:id="@+id/select_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+
         app:layout_constraintTop_toBottomOf="@id/price_layout"
         android:text="select"
         />

@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.ChooseRoomActivity">
+    tools:context=".Activity.BookingHistory">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,8 +33,7 @@
                 android:id="@+id/title_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose Room"
-                android:textStyle="bold"
+                android:text="History Booking"
                 android:layout_marginLeft="55dp"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"
@@ -42,21 +43,19 @@
         </androidx.appcompat.widget.Toolbar>
 
     </LinearLayout>
-    <ListView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:id="@+id/listview_room"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="10dp"/>
-    <Button
-        android:id="@+id/reserve_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Reserve"
-        android:background="@color/colorAccent"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:padding="10dp"
+        app:layout_constraintTop_toTopOf="parent">
+        <ListView
+            android:id="@+id/list_booking"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
