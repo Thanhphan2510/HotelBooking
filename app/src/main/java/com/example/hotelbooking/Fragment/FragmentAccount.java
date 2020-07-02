@@ -152,6 +152,7 @@ public class FragmentAccount extends Fragment {
             for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
                 if (user.getProviderId().equals("password")) {
                     Log.e("thanhphan", "User is signed in with email/password ");
+                    getUserProfileEmail(mAuth.getCurrentUser());
                 }
                 if (user.getProviderId().equals("facebook.com")) {
                     Log.e("thanhphan", "User is signed in with fb ");
@@ -187,6 +188,11 @@ public class FragmentAccount extends Fragment {
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_menu, FragmentMenuMain.newInstance()).commit();
         return view;
+    }
+
+    private void getUserProfileEmail(FirebaseUser currentUser) {
+        String email = currentUser.getEmail().toString();
+        txtEmail.setText(email);
     }
 
     private void updateUI() {

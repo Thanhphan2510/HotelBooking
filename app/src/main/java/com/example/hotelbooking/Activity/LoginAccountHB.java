@@ -21,8 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginAccountHB extends AppCompatActivity {
     private EditText username, pass;
-    private Button signInBtn, signUpBtn;
-    private TextView forgotPassTv;
+    private Button signInBtn ;
+    private TextView forgotPassTv,signUpBtn;
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -32,7 +32,7 @@ public class LoginAccountHB extends AppCompatActivity {
         username = findViewById(R.id.username_login_account_HB);
         pass = findViewById(R.id.password_login_account_HB);
         signInBtn = findViewById(R.id.signin_button_login_account_HB);
-        signUpBtn = findViewById(R.id.signin_button_login_account_HB);
+        signUpBtn = findViewById(R.id.signup_button_login_account_HB);
         forgotPassTv = findViewById(R.id.forgotpass_textview_login_account_HB);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -87,7 +87,7 @@ public class LoginAccountHB extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginAccountHB.this, CreateAccountHB.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                finish();
+
             }
         });
 
