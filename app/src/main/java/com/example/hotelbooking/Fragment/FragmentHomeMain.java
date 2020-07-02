@@ -2,11 +2,6 @@ package com.example.hotelbooking.Fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +10,22 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+
 import android.widget.Toast;
+
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 
 import com.example.hotelbooking.R;
 import com.example.hotelbooking.Utils.MyUntil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,7 +46,10 @@ public class FragmentHomeMain extends Fragment {
     private int mYear, mMonth, mDay;
     private AutoCompleteTextView autoCompleteTextView;
     private ListView image_show;
+
     String checkinStr ="", checkoutStr="";
+
+    private TextView txtUser;
 
     public FragmentHomeMain() {
         // Required empty public constructor
@@ -57,7 +65,6 @@ public class FragmentHomeMain extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 
@@ -93,6 +100,9 @@ public class FragmentHomeMain extends Fragment {
             }
         });
 
+        txtUser = view.findViewById(R.id.txtUser);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        txtUser.setText("Hello "+ user.getDisplayName()+"!");
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +194,8 @@ public class FragmentHomeMain extends Fragment {
                 dd.show();
             }
         });
+
+
 
         return view;
     }

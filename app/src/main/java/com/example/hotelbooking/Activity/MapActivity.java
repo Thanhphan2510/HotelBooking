@@ -88,8 +88,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void getCurrentLocation() {
-        FusedLocationProviderClient mFusedLocationClient =
-                LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override

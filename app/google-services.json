@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:847758651184:android:8286970354a2d4a0f562f5",
+        "mobilesdk_app_id": "1:847758651184:android:8b993d615c43522bf562f5",
         "android_client_info": {
-          "package_name": "com.example.hotelbookingnew"
+          "package_name": "com.example.hotelbooking"
         }
       },
       "oauth_client": [
         {
-          "client_id": "847758651184-mh6tdek74i6gj2dmgkm3696auj6usl3a.apps.googleusercontent.com",
+          "client_id": "847758651184-8qk7khts6di45vaah2cl9krti90pcuju.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.hotelbookingnew",
+            "package_name": "com.example.hotelbooking",
             "certificate_hash": "4a3ad700005108c684e33104f6f138b7f744214a"
           }
         },
