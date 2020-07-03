@@ -134,7 +134,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                     Toast.makeText(BookingReviewActivity.this, "choose room!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(checkin_tv.getText().toString().equals("NULL")||checkout_tv.getText().toString().equals("NULL")){
+                if(checkin_tv.getText().toString().equals("null")||checkout_tv.getText().toString().equals("null")){
                     Toast.makeText(BookingReviewActivity.this, "choose checkin, checkout!", Toast.LENGTH_LONG).show();
                     return;
                 }

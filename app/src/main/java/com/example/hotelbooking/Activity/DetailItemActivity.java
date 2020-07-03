@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
+import com.example.hotelbooking.Utils.MyUntil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -158,13 +161,23 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
         selectRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                Intent intent = new Intent(activity.getApplicationContext(), ChooseRoomActivity.class);
-                intent.putExtra("InfoClickedItem", item);
-                intent.putExtra("checkinInfor", checkinBtn.getText().toString());
-                intent.putExtra("checkoutInfor", checkoutBtn.getText().toString());
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                activity.startActivity(intent);
+                try {
+                    if(MyUntil.covertStringtoDate(checkinBtn.getText().toString()).before(MyUntil.covertStringtoDate(checkoutBtn.getText().toString()))){
+                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                        Intent intent = new Intent(activity.getApplicationContext(), ChooseRoomActivity.class);
+                        intent.putExtra("InfoClickedItem", item);
+                        intent.putExtra("checkinInfor", checkinBtn.getText().toString());
+                        intent.putExtra("checkoutInfor", checkoutBtn.getText().toString());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        activity.startActivity(intent);
+
+                    }else{
+                        Toast.makeText(DetailItemActivity.this,"Enter checkin < checkout", Toast.LENGTH_LONG).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         });

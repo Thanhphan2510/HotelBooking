@@ -1,6 +1,7 @@
 package com.example.hotelbooking.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,8 @@ public class BookingHistoryAdapter extends ArrayAdapter<BookHistory> {
                 if(task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     hotelName.setText(String.valueOf(doc.get("name")));
-                    Picasso.with(context).load(String.valueOf(doc.get("picture"))).fit().centerCrop().into(imageView);
+                    Log.e("thanhphan", "onComplete: "+ String.valueOf(doc.get("picture")));
+                    Picasso.with(context).load(String.valueOf(doc.get("image"))) .fit().centerCrop().into(imageView);
                 }
 
             }
