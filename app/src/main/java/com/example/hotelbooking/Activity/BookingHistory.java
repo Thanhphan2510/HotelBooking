@@ -16,6 +16,7 @@ import com.example.hotelbooking.Item.BookHistory;
 import com.example.hotelbooking.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BookingHistory extends AppCompatActivity {
@@ -80,16 +82,16 @@ public class BookingHistory extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot doc1 = task.getResult();
-//                                Timestamp checkinTS = (Timestamp) doc1.get("checkin");
+                                Timestamp checkinTS = (Timestamp) doc1.get("checkin");
                                 String checkinDT = String.valueOf(doc1.get("checkin"));
-//                                Date checkinDate_Data = checkinTS.toDate();
+                                Date checkinDate_Data = checkinTS.toDate();
 
-//                                Timestamp checkoutTS = (Timestamp) doc1.get("checkout");
+                                Timestamp checkoutTS = (Timestamp) doc1.get("checkout");
                                 String checkoutDT = String.valueOf(doc1.get("checkout"));
-//                                Date checkoutDate_Data = checkoutTS.toDate();
+                                Date checkoutDate_Data = checkoutTS.toDate();
 
-                                bookingHistory = new BookHistory(checkinDT.toString(),
-                                       checkoutDT.toString(), String.valueOf(doc1.get("clientID")),
+                                bookingHistory = new BookHistory(checkinDate_Data.toString(),
+                                       checkoutDate_Data.toString(), String.valueOf(doc1.get("clientID")),
                                         String.valueOf(doc1.get("country")), String.valueOf(doc1.get("E-mail")),
                                         String.valueOf(doc1.get("firstName")), String.valueOf(doc1.get("lastName")),
                                         String.valueOf(doc1.get("phone")), String.valueOf(doc1.get("hotelID")),

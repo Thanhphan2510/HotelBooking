@@ -46,7 +46,7 @@ public class MyUntil {
 
         SimpleDateFormat spf=new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",Locale.ENGLISH);
         Date newDate=spf.parse(date);
-        spf= new SimpleDateFormat("dd / MM / yyyy");
+        spf= new SimpleDateFormat("dd/MM/yyyy");
         date = spf.format(newDate);
         return date;
     }
