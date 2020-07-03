@@ -1,25 +1,21 @@
 package com.example.hotelbooking.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-
 import android.widget.TextView;
-
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hotelbooking.Adapter.RoomBookingReviewAdapter;
 import com.example.hotelbooking.Item.BookingInfo;
 import com.example.hotelbooking.Item.BookingReviewRoom;
-import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.Item.Room;
 import com.example.hotelbooking.R;
 import com.example.hotelbooking.Utils.MyUntil;
@@ -30,20 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,6 +178,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Toast.makeText(getApplicationContext(),"Booked Success",Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(BookingReviewActivity.this, HomeActivity.class));
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override

@@ -108,9 +108,6 @@ public class FragmentHomeMain extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle=new Bundle();
-
-
-
                 if(autoCompleteTextView.getText().toString().equals("")){
                     if(checkoutStr.equals("")||checkinStr.equals("")){
                         Toast.makeText(getContext(),"Enter checkin, checkout", Toast.LENGTH_LONG).show();

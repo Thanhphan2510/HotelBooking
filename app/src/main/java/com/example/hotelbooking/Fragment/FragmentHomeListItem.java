@@ -12,20 +12,21 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.hotelbooking.Activity.DetailItemActivity;
 import com.example.hotelbooking.Activity.HomeActivity;
 import com.example.hotelbooking.Activity.MapActivity;
 import com.example.hotelbooking.Adapter.ItemHomeAdapter;
 import com.example.hotelbooking.Item.HomeItem;
-import com.example.hotelbooking.Item.Room;
 import com.example.hotelbooking.R;
 import com.example.hotelbooking.Utils.MyUntil;
-import com.facebook.internal.CollectionMapper;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
@@ -39,19 +40,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import io.opencensus.internal.Utils;
+//import java.util.Date;
 
 //import com.example.hotelbooking.Item.MarkerItem;
 //import com.google.maps.android.clustering.ClusterManager;
@@ -260,132 +256,213 @@ public class FragmentHomeListItem extends Fragment {
 
                             Timestamp checkinTS = (Timestamp) doc.get("checkin");
                             Date checkinDate_Data = checkinTS.toDate();
-
                             Timestamp checkoutTS = (Timestamp) doc.get("checkout");
                             Date checkoutDate_Data = checkoutTS.toDate();
-
                             ArrayList<String> room_list = new ArrayList<>();
+                            Date checkoutDate = null;
+                            Date checkinDate = null;
                             try {
-                                Date checkinDate = MyUntil.covertStringtoDate(checkinStr);
-                                Date checkoutDate = MyUntil.covertStringtoDate(checkoutStr);
-
-                                //check date không thỏa mãn
-                                if ((checkinDate_Data.before(checkinDate) && checkinDate.before(checkinDate_Data)) ||
-                                        (checkinDate.before(checkinDate_Data) && checkoutDate.after(checkoutDate_Data)) ||
-                                        (checkinDate_Data.before(checkoutDate) && checkoutDate_Data.after(checkoutDate))) {
-                                    if (!hotelID_roomID.containsKey(hotel_id)) {
-                                        hotelID_roomID.put(hotel_id, 1);
-                                        room_list.add(room_id);
-                                        Log.e("check roomID", "!hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
-                                        bookedHotelIDs.add(hotel_id);
-                                    } else {
-                                        hotelID_roomID.replace(hotel_id, hotelID_roomID.get(hotel_id).intValue() + 1);
-                                        room_list.add(room_id);
-                                        Log.e("check roomID", "hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
-                                    }
-                                    //xử lý các trường hợp date không thỏa mãn
-                                    Log.e("check roomID", "các trường hợp date không thỏa mãn: " + hotel_id + " " + room_list.toString());
-                                    roomIDs.addAll(room_list);
-                                    for (int i = 0; i < bookedHotelIDs.size(); i++) {
-//                                    Log.e("check roomID", "hotelID_roomID.get(bookedHotelIDs.get(i)): " + );
-                                        if (hotelID_roomID.containsKey((bookedHotelIDs.get(i)))) {
-                                            int value = 0;
-                                            value = hotelID_roomID.get(bookedHotelIDs.get(i)).intValue();
-                                            Log.e("check roomID", "onComplete: " + value);
-                                            for (int j = 0; j < value; j++) {
-                                                Log.e("check roomID", "onComplete: " + roomIDs.get(j));
-                                                DocumentReference documentReference = database.collection("hotels")
-                                                        .document(bookedHotelIDs.get(i)).collection("rooms")
-                                                        .document(roomIDs.get(j));
-                                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            DocumentSnapshot documentSnapshot = task.getResult();
-                                                            int leftRoom = new Integer(String.valueOf(documentSnapshot.get("leftroom")));
-                                                            String hotelID = String.valueOf(documentSnapshot.get("hotelID"));
-
-                                                            //nếu date không thỏa mãn nhưng phòng trống >0 -> OK
-                                                            if (leftRoom > 0) {
-                                                                DocumentReference documentReference = database.collection("hotels").document(hotelID);
-                                                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            DocumentSnapshot doc = task.getResult();
-                                                                            HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
-                                                                                    String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
-                                                                                    new Long(String.valueOf(doc.get("star"))).floatValue(),
-                                                                                    new Integer(String.valueOf(doc.get("price"))),
-                                                                                    String.valueOf(doc.get("description1")),
-                                                                                    String.valueOf(doc.get("description2")),
-                                                                                    String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                                            Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn " + items.toString());
-                                                                            //check exist hotel in list
-                                                                            boolean exist = false;
-                                                                            for (HomeItem item1 : items) {
-                                                                                if (item1.getId().equals(item.getId())) {
-                                                                                    {
-                                                                                        exist = true;
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            if (exist == false) {
-                                                                                items.add(item);
-                                                                            }
-
-                                                                            itemHomeAdapter.notifyDataSetChanged();
-
-                                                                        }
-                                                                    }
-                                                                });
-                                                            }
-                                                        }
-
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    //date thỏa mãn ->OK
-                                    DocumentReference documentReference = database.collection("hotels").document(hotel_id);
-                                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot doc = task.getResult();
-                                                HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
-                                                        String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
-                                                        new Long(String.valueOf(doc.get("star"))).floatValue(),
-                                                        new Integer(String.valueOf(doc.get("price"))),
-                                                        String.valueOf(doc.get("description1")),
-                                                        String.valueOf(doc.get("description2")),
-                                                        String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
-                                                Log.e("items", "onComplete: xử lý các trường hợp date  thỏa mãn " + items.toString());
-
-                                                //check exist hotel in list
-                                                boolean exist = false;
-                                                for (HomeItem item1 : items) {
-                                                    if (item1.getId().equals(item.getId())) {
-                                                        {
-                                                            exist = true;
-                                                        }
-                                                    }
-                                                }
-                                                if (exist == false) {
-                                                    items.add(item);
-                                                }
-
-                                                itemHomeAdapter.notifyDataSetChanged();
-
-                                            }
-                                        }
-                                    });
-                                }
+                               checkoutDate = MyUntil.covertStringtoDate(checkoutStr);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            try {
+                                checkinDate = MyUntil.covertStringtoDate(checkinStr);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+
+//                            check date không thỏa mãn
+                            if (checkinDate.before(checkinDate_Data) && checkoutDate.after(checkoutDate_Data)) {
+                                if (!hotelID_roomID.containsKey(hotel_id)) {
+                                    hotelID_roomID.put(hotel_id, 1);
+                                    room_list.add(room_id);
+                                    Log.e("check roomID", "!hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
+                                    bookedHotelIDs.add(hotel_id);
+                                } else {
+                                    hotelID_roomID.replace(hotel_id, hotelID_roomID.get(hotel_id).intValue() + 1);
+                                    room_list.add(room_id);
+                                    Log.e("check roomID", "hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
+                                }
+                                //xử lý các trường hợp date không thỏa mãn
+                                Log.e("check roomID", "các trường hợp date không thỏa mãn: " + hotel_id + " " + room_list.toString());
+                                roomIDs.addAll(room_list);
+                                for (int i = 0; i < bookedHotelIDs.size(); i++) {
+//                                    Log.e("check roomID", "hotelID_roomID.get(bookedHotelIDs.get(i)): " + );
+                                    if (hotelID_roomID.containsKey((bookedHotelIDs.get(i)))) {
+                                        int value = 0;
+                                        value = hotelID_roomID.get(bookedHotelIDs.get(i)).intValue();
+                                        Log.e("check roomID", "onComplete: " + value);
+                                        for (int j = 0; j < value; j++) {
+                                            Log.e("check roomID", "onComplete: " + roomIDs.get(j));
+                                            DocumentReference documentReference = database.collection("hotels")
+                                                    .document(bookedHotelIDs.get(i)).collection("rooms")
+                                                    .document(roomIDs.get(j));
+                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                                        int leftRoom = new Integer(String.valueOf(documentSnapshot.get("leftroom")));
+                                                        String hotelID = String.valueOf(documentSnapshot.get("hotelID"));
+
+                                                        //nếu date không thỏa mãn nhưng phòng trống >0 -> OK
+                                                        if (leftRoom > 0) {
+                                                            DocumentReference documentReference = database.collection("hotels").document(hotelID);
+                                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        DocumentSnapshot doc = task.getResult();
+                                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
+                                                                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                                                new Float(String.valueOf(doc.get("star"))),
+                                                                                new Integer(String.valueOf(doc.get("price"))),
+                                                                                String.valueOf(doc.get("description1")),
+                                                                                String.valueOf(doc.get("description2")),
+                                                                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn " + items.toString());
+                                                                        //check exist hotel in list
+                                                                        boolean exist = false;
+                                                                        for (HomeItem item1 : items) {
+                                                                            if (item1.getId().equals(item.getId())) {
+                                                                                {
+                                                                                    exist = true;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (exist == false) {
+                                                                            items.add(item);
+                                                                        }
+
+                                                                        itemHomeAdapter.notifyDataSetChanged();
+
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            } else if (checkinDate_Data.before(checkinDate) && checkinDate.before(checkinDate_Data) || checkinDate_Data.before(checkoutDate) && checkoutDate_Data.after(checkoutDate)) {
+                                if (!hotelID_roomID.containsKey(hotel_id)) {
+                                    hotelID_roomID.put(hotel_id, 1);
+                                    room_list.add(room_id);
+                                    Log.e("check roomID", "!hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
+                                    bookedHotelIDs.add(hotel_id);
+                                } else {
+                                    hotelID_roomID.replace(hotel_id, hotelID_roomID.get(hotel_id).intValue() + 1);
+                                    room_list.add(room_id);
+                                    Log.e("check roomID", "hotelID_roomID.containsKey(hotel_id): " + room_id + " " + hotel_id);
+                                }
+                                //xử lý các trường hợp date không thỏa mãn
+                                Log.e("check roomID", "các trường hợp date không thỏa mãn: " + hotel_id + " " + room_list.toString());
+                                roomIDs.addAll(room_list);
+                                for (int i = 0; i < bookedHotelIDs.size(); i++) {
+//                                    Log.e("check roomID", "hotelID_roomID.get(bookedHotelIDs.get(i)): " + );
+                                    if (hotelID_roomID.containsKey((bookedHotelIDs.get(i)))) {
+                                        int value = 0;
+                                        value = hotelID_roomID.get(bookedHotelIDs.get(i)).intValue();
+                                        Log.e("check roomID", "onComplete: " + value);
+                                        for (int j = 0; j < value; j++) {
+                                            Log.e("check roomID", "onComplete: " + roomIDs.get(j));
+                                            DocumentReference documentReference = database.collection("hotels")
+                                                    .document(bookedHotelIDs.get(i)).collection("rooms")
+                                                    .document(roomIDs.get(j));
+                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                                        int leftRoom = new Integer(String.valueOf(documentSnapshot.get("leftroom")));
+                                                        String hotelID = String.valueOf(documentSnapshot.get("hotelID"));
+
+                                                        //nếu date không thỏa mãn nhưng phòng trống >0 -> OK
+                                                        if (leftRoom > 0) {
+                                                            DocumentReference documentReference = database.collection("hotels").document(hotelID);
+                                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        DocumentSnapshot doc = task.getResult();
+                                                                        HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
+                                                                                String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                                                new Long(String.valueOf(doc.get("star"))).floatValue(),
+                                                                                new Integer(String.valueOf(doc.get("price"))),
+                                                                                String.valueOf(doc.get("description1")),
+                                                                                String.valueOf(doc.get("description2")),
+                                                                                String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                                                        Log.e("items", "onComplete: xử lý các trường hợp date không thỏa mãn " + items.toString());
+                                                                        //check exist hotel in list
+                                                                        boolean exist = false;
+                                                                        for (HomeItem item1 : items) {
+                                                                            if (item1.getId().equals(item.getId())) {
+                                                                                {
+                                                                                    exist = true;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (exist == false) {
+                                                                            items.add(item);
+                                                                        }
+
+                                                                        itemHomeAdapter.notifyDataSetChanged();
+
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            } else {
+//                                //date thỏa mãn ->OK
+                                DocumentReference documentReference = database.collection("hotels").document(hotel_id);
+                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot doc = task.getResult();
+                                            HomeItem item = new HomeItem(String.valueOf(doc.get("hotelID")),
+                                                    String.valueOf(doc.get("image")), String.valueOf(doc.get("name")),
+                                                    new Long(String.valueOf(doc.get("star"))).floatValue(),
+                                                    new Integer(String.valueOf(doc.get("price"))).intValue(),
+                                                    String.valueOf(doc.get("description1")),
+                                                    String.valueOf(doc.get("description2")),
+                                                    String.valueOf(doc.get("description3")).replaceAll("\\n", "\r\n"));
+                                            Log.e("imagefirebase fail", "onComplete: xử lý các trường hợp date  thỏa mãn " + items.toString());
+
+                                            //check exist hotel in list
+                                            boolean exist = false;
+                                            for (HomeItem item1 : items) {
+                                                if (item1.getId().equals(item.getId())) {
+                                                    {
+                                                        exist = true;
+                                                    }
+                                                }
+                                            }
+                                            if (exist == false) {
+                                                item.setImageView(item.getImageView());
+                                                items.add(item);
+
+                                            }
+
+                                            itemHomeAdapter.notifyDataSetChanged();
+
+                                        }
+                                    }
+                                });
+                                }
+//                            }
                         }
                     }
 

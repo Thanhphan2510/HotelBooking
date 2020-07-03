@@ -1,15 +1,14 @@
 package com.example.hotelbooking.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hotelbooking.Adapter.RoomAdapter;
 import com.example.hotelbooking.Item.HomeItem;
@@ -27,7 +26,7 @@ import java.util.List;
 
 public class ChooseRoomActivity extends AppCompatActivity {
     private ListView listView;
-    private Button reserveBtn;
+    private Button reserveBtn, btnBack;
     ArrayList<Room> rooms;
     RoomAdapter roomAdapter;
 
@@ -41,6 +40,13 @@ public class ChooseRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_room);
         listView = findViewById(R.id.listview_room);
         reserveBtn = findViewById(R.id.reserve_btn);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         rooms = new ArrayList<>();
         selectedRooms = new ArrayList<>();

@@ -3,22 +3,21 @@ package com.example.hotelbooking.Item;
 import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Room implements Serializable {
     private String roomID, name;
     private int price;
     private String description;
-    @PropertyName("facilites")
-    private List<String> facilites;
+    @PropertyName("facilities")
+    private List<String> facilities;
 
-    public Room(String roomID, String name, int price, String description, List<String> facilites) {
+    public Room(String roomID, String name, int price, String description, List<String> facilities) {
         this.roomID = roomID;
         this.name = name;
         this.price = price;
         this.description = description;
-        this.facilites = facilites;
+        this.facilities = facilities;
     }
 
     @Override
@@ -28,7 +27,7 @@ public class Room implements Serializable {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", description='" + description + '\'' +
-                ", facilites=" + facilites +
+                ", facilites=" + facilities +
                 '}';
     }
 
@@ -66,12 +65,12 @@ public class Room implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    @PropertyName("facilites")
-    public List<String> getFacilites() {
-        return facilites;
+    @PropertyName("facilities")
+    public List<String> getFacilities() {
+        return facilities;
     }
-    @PropertyName("facilites")
-    public void setFacilites(List<String> facilites) {
-        this.facilites = facilites;
+    @PropertyName("facilities")
+    public void setFacilities(List<String> facilities) {
+        this.facilities = facilities;
     }
 }

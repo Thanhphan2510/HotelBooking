@@ -1,16 +1,9 @@
 package com.example.hotelbooking.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-
-
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,11 +13,12 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.hotelbooking.Fragment.FragmentHomeListItem;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.example.hotelbooking.Item.HomeItem;
 import com.example.hotelbooking.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,15 +27,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -117,8 +108,8 @@ public class DetailItemActivity extends AppCompatActivity implements OnMapReadyC
         hotelName.setText(item.getName());
         hotelRating.setRating(item.getRating());
 
-        String checkin_str = intent.getStringExtra("checkinInfor");
-        String checkout_str = intent.getStringExtra("checkoutInfor");
+        final String checkin_str = intent.getStringExtra("checkinInfor");
+        final String checkout_str = intent.getStringExtra("checkoutInfor");
 
         checkinBtn.setText(checkin_str);
         checkinBtn.setOnClickListener(new View.OnClickListener() {
