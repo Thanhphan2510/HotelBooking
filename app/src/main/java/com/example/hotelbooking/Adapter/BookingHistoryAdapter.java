@@ -31,7 +31,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class BookingHistoryAdapter extends ArrayAdapter<BookHistory> {
+public class   BookingHistoryAdapter extends ArrayAdapter<BookHistory> {
     private Context context;
     private List<BookHistory> bookingHistories;
 

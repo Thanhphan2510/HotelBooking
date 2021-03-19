@@ -25,11 +25,22 @@ public class MyUntil {
         long timestamp = Long.parseLong(str) * 1000;
         return timestamp;
     }
+
     public static Date covertStringtoDate(String str_date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date date = format.parse(str_date);
         return date;
     }
+
+    public static String covertDateToString(String date) throws ParseException {
+
+        SimpleDateFormat spf=new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",Locale.ENGLISH);
+        Date newDate=spf.parse(date);
+        spf= new SimpleDateFormat("dd/MM/yyyy");
+        date = spf.format(newDate);
+        return date;
+    }
+
     public static String UpString(String stringfromclient){
 //        String stringfromclient = "what happen in your class?";
         //cắt string thành mảng qua các dấu Space
@@ -41,14 +52,6 @@ public class MyUntil {
             stringfromclient1 = stringfromclient1 + " ";
         }
         return stringfromclient1;
-    }
-    public static String covertDateToString(String date) throws ParseException {
-
-        SimpleDateFormat spf=new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",Locale.ENGLISH);
-        Date newDate=spf.parse(date);
-        spf= new SimpleDateFormat("dd/MM/yyyy");
-        date = spf.format(newDate);
-        return date;
     }
 
 

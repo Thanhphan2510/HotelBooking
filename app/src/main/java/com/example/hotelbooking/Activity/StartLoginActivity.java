@@ -72,16 +72,12 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_login);
 
-//        FacebookSdk.sdkInitialize(this.getApplicationContext());
-//        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
-//        AppEventsLogger.activateApp(this);
-
-
         exit = (Button) findViewById(R.id.exit_btn);
         blurImageView = (BlurImageView) findViewById(R.id.BlurImageView);
         blurImageView.setBlur(2);
         clicked = false;
         fragAccount = new FragmentAccount();
+        //show key hash
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.example.hotelbooking",
@@ -94,6 +90,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
         } catch (PackageManager.NameNotFoundException e) {
         } catch (NoSuchAlgorithmException e) {
         }
+        //----------
+
         mAuth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -146,8 +144,8 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
                 Log.e("thanhphan", "onSuccess: " + "Login fb: " + loginResult);
 
                 handleFacebookAccessToken(loginResult.getAccessToken());
-//                updateUI();
-//
+                updateUI();
+
             }
 
             @Override
@@ -168,7 +166,7 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-//        printKeyHash(this);
+
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -221,35 +219,6 @@ public class StartLoginActivity extends AppCompatActivity implements GoogleApiCl
     private void handleFacebookAccessToken(AccessToken token) {
         Log.e("thanhphan", "handleFacebookAccessToken:" + token.getToken());
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-//        mAuth.getCurrentUser().linkWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.e("thanhphan", "linkWithCredential:success");
-//                        } else {
-//                            Log.e("thanphan", "linkWithCredential:failure", task.getException());
-//                        }
-//                    }
-//                });
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        Log.e("thanhphan", "onSuccess: " + "LOL");
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-////                            updateUI();
-//                            Log.e("thanhphan", "onSuccess: " + "signInWithCredential FB");
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.e("thanhphan", "onSuccess: " + "Login fb :  not đẩy lên fairebase");
-//                        }
-//                        Log.e("thanhphan", "LOL");
-//                    }
-//
-//                });
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
